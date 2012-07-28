@@ -1,17 +1,17 @@
 #!/usr/bin/perl
 #use utf8;
-use strict;
-use warnings;
+use common::sense;
 use Carp qw(croak cluck);
 use LWP::UserAgent;
 use HTTP::Request::Common;
 use JSON;
 
 use Data::Dumper;
+use POSIX;
 
-my $apikey='aNqd2lf7Tf963C96c8A4758Oe7g3P2d6';
-my $username='xani666';
-my $password='xanilinuxpower1';
+my $apikey='';
+my $username='';
+my $password='';
 
 my $ua = LWP::UserAgent->new();
 $ua->timeout(20);
@@ -30,8 +30,10 @@ my $req = POST('https://readitlaterlist.com/v2/get', [
     tags => 1, # default = 0
 ]);
 my $content = $ua->request($req)->content();
-utf8::upgrade($content);
+#utf8::upgrade($content);
 my $ril_state = from_json($content);
+print STDERR Dumper $ril_state;
+#utf8::upgrade($ril_state);
 my $list = $ril_state->{'list'};
 
 my @rsort = sort { $b <=> $a} keys %$list;
@@ -39,6 +41,7 @@ my @rsort = sort { $b <=> $a} keys %$list;
 # initial org-mode config:
 print '
 #+STARTUP: entitiespretty
+#+CATEGORY: RItLater
 #+SEQ_TODO: UNREAD(u) READ(r)
 ';
 
@@ -58,15 +61,26 @@ foreach (@rsort) {
     }
 
     # Then title, ID
-    print $d->{'title'} . ' [#' . $d->{'item_id'} . '] ';
-
+    if ( $d->{'title'} =~ /^\s*$/ ) {
+        print '[[' . $d->{'url'}. '][' . $d->{'url'} . ']]';
+    } else {
+        my $parsed_title = $d->{'title'};
+        $parsed_title =~ s/\[/\{/g;
+        $parsed_title =~ s/\]/\}/g;
+        print '[[' . $d->{'url'}. '][' . $parsed_title . ']]';
+    }
+    print ' [#' . $d->{'item_id'} . '] ';
     if ( defined $d->{'tags'} ) {
         my $taglist = $d->{'tags'} =~ s/\,/:/g;
         $taglist = ':' . $taglist . ':';
         print $taglist;
     }
-    # and URL in next line
-    print "\n  " . $d->{'url'} . "\n";
+    # and timestamp in next line
+    print "\n  " . strftime( 'Added: <%F %a %R>',  localtime($d->{'time_added'}) );
+    if ( $d->{'time_added'} =! $d->{'time_updated'} ) {
+        print strftime( '  Modified: <%F %a %R>',  localtime($d->{'time_updated'}) );
+    }
+    print "\n";
 }
 #print Dumper \@rsort;
 #print Dumper from_json($content);
