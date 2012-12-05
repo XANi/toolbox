@@ -18,7 +18,7 @@ if( defined($ARGV[0]) ) {
 # Socket to talk to server
 say 'Connecting to hello world server';
 my $requester = $context->socket(ZMQ_SUB);
-$requester->connect('epgm://eth0;239.3.2.1:5555');
+$requester->connect('epgm://br0;239.3.2.1:5555');
 $requester->setsockopt(ZMQ_SUBSCRIBE, $filter);
 while(1)  {
     my ($tag, $json) = split(/\|/, $requester->recv->data,2);
