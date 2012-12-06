@@ -2,13 +2,21 @@
 #
 # send single message via xmpp
 # probably overkill but can be easily extended to micro-bot
+# config yaml
+# ---
+# xmpp_user: xxxx
+# xmpp_pass: xxxx
 use AnyEvent;
 use AnyEvent::XMPP::Client;
 use AnyEvent::XMPP::Ext::Disco;
 use AnyEvent::XMPP::Ext::Version;
+use AnyEvent::XMPP::IM::Message;
+use File::Slurp;
+use YAML::XS;
 
-my $xmpp_user = '';
-my $xmpp_pass = '';
+my $tmp = read_file('config.yaml') or croak("Can't load config: $!");
+my $cfg = Load($tmp) or croak("Can't parse config: $!");
+
 
 binmode STDOUT, ":utf8";
 
@@ -22,8 +30,9 @@ $cl->add_extension ($version);
 
 $cl->set_presence (undef, 'I\'m a talking bot.', 1);
 
-$cl->add_account ($xmpp_user, $xmpp_pass);
-warn "connecting to $xmpp_user...\n";
+
+$cl->add_account ($cfg->{'xmpp_user'}, $cfg->{'xmpp_pass'});
+warn "connecting to $cfg->{xmpp_user}...\n";
 
 $cl->reg_cb (
    session_ready => sub {
@@ -52,14 +61,9 @@ $cl->reg_cb (
    },
    connected => sub {
        $cl->send_message($ARGV[1], $ARGV[0]);
-              $cl->send_message($ARGV[1], $ARGV[0]);
-              $cl->send_message($ARGV[1], $ARGV[0]);
    },
 );
 
 $cl->start;
-
-
-
 
 $j->wait;
