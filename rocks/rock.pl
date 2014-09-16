@@ -18,14 +18,16 @@ timethis(1, sub {
          },
          "First write");
 
-timethis(-20, sub {
+timethis(-90, sub {
              my $batch = RocksDB::WriteBatch->new;
              my $batchid = rand;
-             for my $z (1..1000) {
+             for my $z (1..10000) {
                  ++$count;
                  $batch->put($batchid . $z => $a);
              }
+             print "end\n";
              $db->write($batch);
+             print "write end\n";
          }, "Write");
 
 print "Count: $count\n";
