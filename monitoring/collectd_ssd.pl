@@ -84,8 +84,11 @@ sub print_ssd_status {
             if($line[1] =~ /Life_Curve_Status/i) {
                 $dev_status->{$dev}{'life_curve_status'} = $line[3] + 0;
             }
-            if($line[1] =~ /(SSD_Life_Left|Media_Wearout_Indicator|Wear_Leveling_Count)/i) {
+            if($line[1] =~ /(SSD_Life_Left)/i) {
                 $dev_status->{$dev}{'ssd_life_left'} = $line[3] + 0;
+            }
+            if($line[1] =~ /(Media_Wearout_Indicator)/i) {
+                $dev_status->{$dev}{'media_wearout_indicator'} = $line[9] + 0;
             }
             if($line[1] =~ /(Wear_Leveling_Count)/i && $line[9] > 0) {
                 $dev_status->{$dev}{'wear_leveling_count'} = $line[9]+0;
