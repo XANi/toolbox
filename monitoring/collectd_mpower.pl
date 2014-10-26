@@ -7,24 +7,25 @@ use Getopt::Long qw(:config auto_help);
 use Pod::Usage;
 use Data::Dumper;
 $ENV{'PATH'}= '/sbin:/bin:/usr/sbin:/usr/bin';
-my $host = `/bin/hostname --fqdn`;
-chomp($host);
 my $cfg = { # default config values go here
-    host       => 'mpower',
-    user       => 'power',
+    host            => 'mpower',
+    user            => 'power',
     'interval' => 30,
 };
 my $help;
 $| = 1;
 GetOptions(
-    'interval=i' => \$cfg->{'interval'},
-    'host'       => \$cfg->{'host'},
-    'user'       => \$cfg->{'user'},
+    'interval=i'    => \$cfg->{'interval'},
+    'host=s'          => \$cfg->{'host'},
+    'user=s'          => \$cfg->{'user'},
+    'collectd-host=s' => \$cfg->{'collectd-host'},
     'help'          => \$help,
 ) or pod2usage(
     -verbose => 2,  #2 is "full man page" 1 is usage + options ,0/undef is only usage
     -exitval => 1,   #exit with error code if there is something wrong with arguments so anything depending on exit code fails too
 );
+
+$cfg->{'collectd-host'} ||= $cfg->{'host'};
 
 # some options are required, display short help if user misses them
 my $required_opts = [ ];
@@ -65,10 +66,10 @@ while(<$mpower_fd>) {
     my($socket, $power, $voltage, $current, $power_factor) =  split (/:/);
     my $t = int(time());
     if (!defined($voltage)) { next ; } #ignore trash
-    print "PUTVAL $host/mpower-socket$socket/power interval=$cfg->{'interval'} $t:$power\n";
-    print "PUTVAL $host/mpower-socket$socket/current interval=$cfg->{'interval'} $t:$power\n";
-    print "PUTVAL $host/mpower-socket$socket/voltage interval=$cfg->{'interval'} $t:$power\n";
-    print "PUTVAL $host/mpower-socket$socket/gauge-power_factor interval=$cfg->{'interval'} $t:$power\n";
+    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/power interval=$cfg->{'interval'} $t:$power\n";
+    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/current interval=$cfg->{'interval'} $t:$power\n";
+    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/voltage interval=$cfg->{'interval'} $t:$power\n";
+    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/gauge-power_factor interval=$cfg->{'interval'} $t:$power\n";
 }
 
 
