@@ -1,0 +1,108 @@
+[global]
+ioengine=libaio
+invalidate=1
+ramp_time=5
+exec_prerun="echo 3 > /proc/sys/vm/drop_caches"
+exec_postrun="date"
+iodepth=128
+runtime=300
+time_based
+direct=1
+# dont set global seed ! that will mess up threaded tests randomness
+#randseed=42
+#randrepeat=0
+filename=fio.data
+filesize=8G #8589934592 #8G
+group_reporting=1
+norandommap
+
+# [seq-write]
+# wait_for_previous
+# bs=4m
+# rw=write
+
+# [seq-read]
+# wait_for_previous
+# bs=4m
+# rw=read
+
+# [seq-rw]
+# wait_for_previous
+# bs=4m
+# rw=rw
+
+# [rand-write]
+# wait_for_previous
+# bs=4k
+# rw=randwrite
+
+# [rand-read]
+# wait_for_previous
+# bs=4k
+# rw=randwrite
+
+# [rand-rw]
+# wait_for_previous
+# bs=4k
+# rw=randrw
+
+
+[threaded-write]
+wait_for_previous
+bs=4k
+rw=randwrite
+# this is needed when multithreaded to not repeat patterns across threads
+numjobs=16
+randrepeat=0
+
+[threaded-read]
+wait_for_previous
+bs=4k
+rw=randwrite
+# this is needed when multithreaded to not repeat patterns across threads
+numjobs=16
+randrepeat=0
+
+[threaded-rw]
+wait_for_previous
+bs=4k
+rw=randrw
+# this is needed when multithreaded to not repeat patterns across threads
+numjobs=16
+randrepeat=0
+
+[threaded-80-20]
+wait_for_previous
+bs=4k
+rw=randrw
+# this is needed when multithreaded to not repeat patterns across threads
+numjobs=16
+randrepeat=0
+rwmixread=80
+rwmixwrite=20
+
+[streaming-write]
+wait_for_previous
+bs=4k
+rw=write
+# this is needed when multithreaded to not repeat patterns across threads
+numjobs=16
+randrepeat=0
+
+[streaming-read]
+wait_for_previous
+bs=4k
+rw=read
+# this is needed when multithreaded to not repeat patterns across threads
+numjobs=16
+randrepeat=0
+
+[streaming-rw]
+wait_for_previous
+bs=4k
+rw=rw
+# this is needed when multithreaded to not repeat patterns across threads
+numjobs=16
+randrepeat=0
+rwmixread=90
+rwmixwrite=10

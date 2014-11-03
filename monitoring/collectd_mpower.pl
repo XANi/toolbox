@@ -10,7 +10,7 @@ $ENV{'PATH'}= '/sbin:/bin:/usr/sbin:/usr/bin';
 my $cfg = { # default config values go here
     host            => 'mpower',
     user            => 'power',
-    'interval' => 30,
+    'interval'      => 10,
 };
 my $help;
 $| = 1;
@@ -67,9 +67,9 @@ while(<$mpower_fd>) {
     my $t = int(time());
     if (!defined($voltage)) { next ; } #ignore trash
     print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/power interval=$cfg->{'interval'} $t:$power\n";
-    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/current interval=$cfg->{'interval'} $t:$power\n";
-    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/voltage interval=$cfg->{'interval'} $t:$power\n";
-    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/gauge-power_factor interval=$cfg->{'interval'} $t:$power\n";
+    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/current interval=$cfg->{'interval'} $t:$current\n";
+    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/voltage interval=$cfg->{'interval'} $t:$voltage\n";
+    print "PUTVAL $cfg->{'collectd-host'}/mpower-socket$socket/gauge-power_factor interval=$cfg->{'interval'} $t:$power_factor\n";
 }
 
 
