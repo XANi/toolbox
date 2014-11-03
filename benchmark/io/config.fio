@@ -1,9 +1,7 @@
 [global]
 ioengine=libaio
 invalidate=1
-ramp_time=5
-exec_prerun="echo 3 > /proc/sys/vm/drop_caches"
-exec_postrun="date"
+ramp_time=10
 iodepth=128
 runtime=300
 time_based
@@ -16,35 +14,35 @@ filesize=8G #8589934592 #8G
 group_reporting=1
 norandommap
 
-# [seq-write]
-# wait_for_previous
-# bs=4m
-# rw=write
+[seq-write]
+wait_for_previous
+bs=4m
+rw=write
 
-# [seq-read]
-# wait_for_previous
-# bs=4m
-# rw=read
+[seq-read]
+wait_for_previous
+bs=4m
+rw=read
 
-# [seq-rw]
-# wait_for_previous
-# bs=4m
-# rw=rw
+[seq-rw]
+wait_for_previous
+bs=4m
+rw=rw
 
-# [rand-write]
-# wait_for_previous
-# bs=4k
-# rw=randwrite
+[rand-write]
+wait_for_previous
+bs=4k
+rw=randwrite
 
-# [rand-read]
-# wait_for_previous
-# bs=4k
-# rw=randwrite
+[rand-read]
+wait_for_previous
+bs=4k
+rw=randwrite
 
-# [rand-rw]
-# wait_for_previous
-# bs=4k
-# rw=randrw
+[rand-rw]
+wait_for_previous
+bs=4k
+rw=randrw
 
 
 [threaded-write]

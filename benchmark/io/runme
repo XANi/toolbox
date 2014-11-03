@@ -1,0 +1,18 @@
+#!/bin/bash
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+if  [ "z$1" = "z" ] ; then
+    echo "Usage: $0 result_name"
+    echo "  Just run it on device you want to test or tweak the config.fio to use your device"
+else
+    OUT=$1
+    shift 1
+    mkdir -p $DIR/results/
+    fio --output=$DIR/results/$OUT.out --append-terse $DIR/config.fio $@
+fi
