@@ -9,7 +9,7 @@ direct=1
 # dont set global seed ! that will mess up threaded tests randomness
 #randseed=42
 #randrepeat=0
-filename=fio.data
+filename=/dev/mapper/hastur-tmp
 filesize=8G #8589934592 #8G
 group_reporting=1
 norandommap
