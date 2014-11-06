@@ -69,6 +69,15 @@ rw=randrw
 numjobs=16
 randrepeat=0
 
+[threaded-rw-pareto]
+wait_for_previous
+bs=4k
+rw=randrw
+random_distribution=pareto:3
+# this is needed when multithreaded to not repeat patterns across threads
+numjobs=16
+randrepeat=0
+
 [threaded-80-20]
 wait_for_previous
 bs=4k
