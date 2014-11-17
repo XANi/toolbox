@@ -73,7 +73,7 @@ randrepeat=0
 wait_for_previous
 bs=4k
 rw=randrw
-random_distribution=pareto:3
+random_distribution=pareto:0.99
 # this is needed when multithreaded to not repeat patterns across threads
 numjobs=16
 randrepeat=0
