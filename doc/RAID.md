@@ -37,26 +37,30 @@ Naming:
 
 
 
+
 ## ServeRAID
 
 ### Get array status
 * `arcconf GETCONFIG 1` - dump of full config with logical and physical drives
 * `arcconf GETLOGS 1 DEVICE` - device errors:
-    Controllers found: 1
-    <ControllerLog controllerID="0" type="0" time="1421660883" version="1" tableFull="false">
-        <driveErrorEntry adapterID="0" channelID="0" deviceID="3" slotNum="3" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="1" abortedCmds="0" mediumErrors="0"/>
-        <driveErrorEntry adapterID="0" channelID="0" deviceID="0" slotNum="0" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="2" abortedCmds="0" mediumErrors="0"/>
-        <driveErrorEntry adapterID="0" channelID="0" deviceID="2" slotNum="2" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="0" abortedCmds="0" mediumErrors="7"/>
-    </ControllerLog>
 
-* `arcconf GETLOGS 1 EVENT` - event log
-    Controllers found: 1
+        Controllers found: 1
         <ControllerLog controllerID="0" type="0" time="1421660883" version="1" tableFull="false">
             <driveErrorEntry adapterID="0" channelID="0" deviceID="3" slotNum="3" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="1" abortedCmds="0" mediumErrors="0"/>
             <driveErrorEntry adapterID="0" channelID="0" deviceID="0" slotNum="0" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="2" abortedCmds="0" mediumErrors="0"/>
             <driveErrorEntry adapterID="0" channelID="0" deviceID="2" slotNum="2" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="0" abortedCmds="0" mediumErrors="7"/>
         </ControllerLog>
-    ...
+
+* `arcconf GETLOGS 1 EVENT` - event log
+
+        Controllers found: 1
+            <ControllerLog controllerID="0" type="0" time="1421660883" version="1" tableFull="false">
+                <driveErrorEntry adapterID="0" channelID="0" deviceID="3" slotNum="3" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="1" abortedCmds="0" mediumErrors="0"/>
+                <driveErrorEntry adapterID="0" channelID="0" deviceID="0" slotNum="0" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="2" abortedCmds="0" mediumErrors="0"/>
+                <driveErrorEntry adapterID="0" channelID="0" deviceID="2" slotNum="2" enclIndex="0" numParityErrors="0" linkFailures="0" hwErrors="0" abortedCmds="0" mediumErrors="7"/>
+            </ControllerLog>
+            ...
+
 ### Add hotspare
 `arcconf setstate 1 device 0,1 hsp logicaldrive 0`
 
