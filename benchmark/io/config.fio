@@ -9,8 +9,8 @@ direct=1
 # dont set global seed ! that will mess up threaded tests randomness
 #randseed=42
 #randrepeat=0
-filename=fio.data
-filesize=8G #8589934592 #8G
+filename=/dev/SysStor/bench
+filesize=64G #8589934592 #8G
 group_reporting=1
 norandommap
 
