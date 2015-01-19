@@ -7,3 +7,4 @@ Simple benchmarks I use for comparing platforms
 ## [Notes](doc/)  
 A bunch of notes and cheatsheets about sysadmin stuff
 
+* [RAID][doc/RAID.md]
