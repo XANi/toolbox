@@ -1,2 +1,0 @@
-* Toolbox
-just some random scripts, some are quick hacks or experimental stuff so watch out for dragons

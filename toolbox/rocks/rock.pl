@@ -35,14 +35,16 @@ timethis(1, sub {
              $db = RocksDB->new('data', {
                  create_if_missing => 1,
                  enable_statistics => 1,
-                 num_levels => 4,
-                 compaction_style => 'level',
+                 OptimizeLevelStyleCompaction => 1,
+                 num_levels => 8,
+                 compaction_style => 'universal',
                  delete_obsolete_files_period_micros => '600000000',
 });
          }, "Open");
 say "Rocksdb levels:" . $db->number_levels();
-
-
+say "level0 stop at:" . $db->level0_stop_write_trigger();
+say "max mem compaction:" . $db->max_mem_compaction_level();
+$db->enable_file_deletions();
 
 my $count;
 timethis(1, sub {
@@ -51,8 +53,8 @@ timethis(1, sub {
          "First write");
 if ($cfg->{'compact'}) {
     timethis(1, sub {
-#                 $db->compact_range(undef,undef,{'target_level' => 2});
-                 $db->compact_range
+                 $db->compact_range(undef,undef,{'target_level' => 1});
+#                 $db->compact_range
              },
              "compact");
     my $s = $db->get_statistics;
@@ -62,7 +64,7 @@ if ($cfg->{'write'}) {
     timethis(-10, sub {
                  my $batch = RocksDB::WriteBatch->new;
                  my $batchid = int(rand(100));
-                 for my $z (1..10000) {
+                 for my $z (1..1000000) {
                      ++$count;
                      $batch->put($batchid . $z => $a);
                  }
