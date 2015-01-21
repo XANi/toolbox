@@ -1,5 +1,31 @@
 # RAID cheatsheet
 
+## Software RAID (mdadm)
+
+### Create array
+
+`mdadm --create /dev/md2 --level=1 --raid-devices=2 /dev/sdb2 /dev/sdd2`
+
+* `--spare-devices-` - for number of spares (usually not neccesary to specify that)
+* `--assume-clean` - dont run inital sync (not recommended on non-raid1(0)), useful for recovering existing ones
+* `--write-mostly` - devices specified after that will be used mostly for writing
+
+### Examine componentdevice
+
+`mdadm --examine`
+
+useful info:
+
+* UUID - for use with scan/assemble
+* Events - can check which device was last written as candidate for recovery
+
+### Scan and run existing array
+
+`mdadm --assemble --scan`
+
+add `--uuid=` (from `--examine`) to start only specific one
+
+
 ## [MegaRAID](http://www.lsi.com/Search/pages/results.aspx?k=megacli&r=assettype%3D%22AQpVc2VyIEd1aWRlCWFzc2V0dHlwZQECXiICIiQ%3D%22)
 
 Devices are addressed by enclosure ID and their number in that enclosure. So device reported as:
