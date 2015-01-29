@@ -1,0 +1,9 @@
+# editor temp files
+*~
+.*.sw?
+.sw?
+.\#*
+\#*\#
+DEADJOE
+# compiled files
+_vendor/
