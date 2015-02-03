@@ -25,6 +25,13 @@ useful info:
 
 add `--uuid=` (from `--examine`) to start only specific one
 
+## resize array
+
+`mdadm -G -z=amount_of_KB`
+
+You can also set -Z to specify "array" size (size visible to application) but that wont persist between reboots
+
+
 
 ## [MegaRAID](http://www.lsi.com/Search/pages/results.aspx?k=megacli&r=assettype%3D%22AQpVc2VyIEd1aWRlCWFzc2V0dHlwZQECXiICIiQ%3D%22)
 
@@ -89,4 +96,3 @@ Naming:
 
 ### Add hotspare
 `arcconf setstate 1 device 0,1 hsp logicaldrive 0`
-
