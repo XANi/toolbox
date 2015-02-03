@@ -68,8 +68,11 @@ Naming:
 * `megacli -AdpSetProp -AlarmSilence -aALL` - silence current alarm (will still trigger on next)
 * `megacli -PDRbld -ShowProg -PhysDrv [3:1] -aALL` - show raid rebuild progress
 
+### Remove drive
 
-
+* `megacli -PDOffline -PhysDrv '[252:1]' -a0` - this will make controller make loud noises
+* `megacli -PDMarkMissing -PhysDrv '[252:1]' -a0 - this will make controller stop making loud noises
+* `megacli -PdPrpRmv -PhysDrv '[252:1]' -a0` this will stop drive
 
 ## ServeRAID
 
