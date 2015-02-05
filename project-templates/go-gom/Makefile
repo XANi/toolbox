@@ -1,6 +1,7 @@
 all: dep
+	gom exec go build [a-z]*go
 	go fmt
-	gom exec go build
+
 
 dep:
 	gom install
