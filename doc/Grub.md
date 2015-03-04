@@ -34,7 +34,7 @@ to fix it:
 * install kernel & grub, setup initrd
 
         yum install -y kernel grub
-        export $ver=target_kernel_version # whatever version just installed, should match kernel file name
+        export ver=target_kernel_version # whatever version just installed, should match kernel file name
         mkinitrd --with virtio_pci --with virtio_blk --allow-missing -f /boot/initrd-$ver.img $ver
 
 * add device.map
