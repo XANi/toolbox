@@ -41,6 +41,7 @@ to fix it:
           `(hd0)    /dev/xvda'
 
 * install grub (if grub-install fails)
+
         device (hd0) /dev/vda
         root (hd0,0)
         setup (hd0)
