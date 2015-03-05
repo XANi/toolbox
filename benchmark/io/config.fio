@@ -37,7 +37,7 @@ rw=randwrite
 [rand-read]
 wait_for_previous
 bs=4k
-rw=randwrite
+rw=randread
 
 [rand-rw]
 wait_for_previous
@@ -56,7 +56,7 @@ randrepeat=0
 [threaded-read]
 wait_for_previous
 bs=4k
-rw=randwrite
+rw=randread
 # this is needed when multithreaded to not repeat patterns across threads
 numjobs=16
 randrepeat=0
