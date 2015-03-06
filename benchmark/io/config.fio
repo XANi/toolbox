@@ -1,7 +1,7 @@
 [global]
 ioengine=libaio
 invalidate=1
-ramp_time=10
+ramp_time=60
 iodepth=128
 runtime=300
 time_based
