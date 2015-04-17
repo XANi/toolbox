@@ -67,7 +67,7 @@ Naming:
 ` -
 * `megacli -AdpSetProp -AlarmSilence -aALL` - silence current alarm (will still trigger on next)
 * `megacli -PDRbld -ShowProg -PhysDrv [3:1] -aALL` - show raid rebuild progress
-
+* `megacli -CfgEachDskRaid0 WT NORA Direct NoCachedBadBBU -aALL` - make a bunch of RAID0s from disks`
 ### Remove drive
 
 * `megacli -PDOffline -PhysDrv '[252:1]' -a0` - this will make controller make loud noises

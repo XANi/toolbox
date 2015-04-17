@@ -28,8 +28,10 @@ to fix it:
          terminal --timeout=5 serial console
          title CentOS (<%= @kernelrelease %>)
              root (hd0,0)
-             kernel /boot/vmlinuz-<%= @kernelrelease %> ro root=LABEL=/ console=ttyS0
+             kernel /boot/vmlinuz-<%= @kernelrelease %> ro root=LABEL=/ console=ttyS0 console=tty1
              initrd /boot/initrd-<%= @kernelrelease %>.img
+
+specify both consoles (tty1/ttyS0) if you want to have both vnc and `virsh console` console
 
 * install kernel & grub, setup initrd
 
