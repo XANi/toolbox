@@ -53,26 +53,47 @@ Naming:
 * `megacli -AdpAlILog -a0` - full log. Long. Very long and slow.
 * `megacli -PDList -aALL` - list all physical devices and their state on all controllers
 * `megacli -PDInfo -PhysDrv '[3:1]' -aALL` - info about single physical drive
+* `megacli -LDInfo  -Lall -a0` - info about all LD on same controller
 * `megacli -PdLocate -Physdrv '[3:1]' -aAL` - locate, add `-stop` to stop
+
+#### Basic ops
+
 * `megacli -CfgLdAdd -rX[E0:S0,E1:S1,...] -[WT|WB] -[NORA|RA|ADRA] -[Direct|Cached]` - add logical drive
     * `-rX` - raid level
     * `WT|WA` - write-thru/writeback
     * `NORA|RA|ADRA` - read-ahead policy
     * `Direct|Cached` - if cached reads are cached in controller's memory
     * `CachedBadBBU|NoCachedBadBBU` - if writes are still cached when battery is bad
-* `megacli -LDInfo  -Lall -a0` - info about all LD on same controller
+* `megacli -CfgClr -aALL` - **CLEAR ALL CONFIG OF EVERYTHING
 * `megacli -PDOnline -Physdrv '[3:1]'` - force drive status to online - if you want to do something with disk stuck in Error` state
 * `megacli -CfgLdAdd -r0 [3:1] WT NORA Cached -a0` - add closest equivalent to "passthru" on some MegaRAID controllers that can't be flashed into IT mode
 * `megacli -PDList -aALL |grep -P -i '(Slot Number|Firmware state|Coerced size|Enclosure device)' |perl -pe 's/Enclosure/\nEnclosure/g' |less` - short status summary
-` -
 * `megacli -AdpSetProp -AlarmSilence -aALL` - silence current alarm (will still trigger on next)
 * `megacli -PDRbld -ShowProg -PhysDrv [3:1] -aALL` - show raid rebuild progress
-* `megacli -CfgEachDskRaid0 WT NORA Direct NoCachedBadBBU -aALL` - make a bunch of RAID0s from disks`
+* `megacli -adpsetprop -enablejbod -1 -a0` - JBOD disks (works on LSI 2208, **doesnt** on 2108)
+    it should detect your drives right after you ran command, it only touches unconfigured drives so you might want to clear config first
+* `megacli -CfgEachDskRaid0 WT NORA Direct NoCachedBadBBU -aALL` - make a bunch of RAID0s from disks. You probably want JBOD mode  if possible (2108 will return ok but fail)
+
+#### Boot manager
+
+* `megacli -AdpBootDrive -Get -a0` -  get boot drive
+    Adapter 0: Boot Physical Drive -- EnclId- 10 Slotid - 1.
+
+    Exit Code: 0x00
+* `megacli -AdpBootDrive -Set -physdrv '[10:1]' -a0` - set boot drive to physical (like JBOD) volume
+* `megacli -AdpBootDrive -Set -L0 -a0` - set boot drive to logical volume
+
+
 ### Remove drive
 
 * `megacli -PDOffline -PhysDrv '[252:1]' -a0` - this will make controller make loud noises
 * `megacli -PDMarkMissing -PhysDrv '[252:1]' -a0 - this will make controller stop making loud noises
 * `megacli -PdPrpRmv -PhysDrv '[252:1]' -a0` this will stop drive
+
+### flashing
+
+* get firmware
+* `megacli -adpfwflash -f mr2208fw.rom -a0`
 
 ## ServeRAID
 
