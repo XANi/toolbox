@@ -8,7 +8,7 @@
 Note that create options cant modify existing permissions, you have to use `auth caps` for it
 
 * `ceph auth get-or-create client.nagios mon 'allow r'` - create nagios user with rights to monitor and return his key
-* `ceph auth get-or-create client.hypervisor mon 'allow r' osd 'allow class-read object_prefix rbd_children, rwx pool=volumes'` - create user with enough rights for libvirt to use storage on 'volumes'
+* `ceph auth get-or-create client.hypervisor mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=volumes'` - create user with enough rights for libvirt to use storage on 'volumes'
 * `ceph-authtool -C -n client.hypervisor --gen-key keyring` - name is of type.user format so clients are `client.name`, osds are `osd.0` etc
 * `ceph auth list` - list auth
 * `ceph auth caps client.hypervisor osd 'allow rw pool=volumes'` - modify permissions for user. `''` for none. You **have to** specify all (mon+osd, or mon+osd+mds), if you dont it will zero out other permissions. So if you change osd perms, copy-paste mon permissions too
@@ -19,6 +19,11 @@ Note that create options cant modify existing permissions, you have to use `auth
 * `ceph osd pool create volumes 512` - create pool `volumes` with `512` placement groups
 * `ceph osd pool set {pool-name} pg_num {pg_num}` - change placement group count (disruptive). Remember to also change pgp_num after that
 * `ceph osd pool set {pool-name} pgp_num {pgp_num}` - change placement group for placement count (disruptive). Remember to change pg_num before that
+
+
+### Volume management
+
+* `rbd create mypool/myimage --size 102400` - create 100GB image. THIS IS IN MEGABYTES and it doesnt support usual k/M/G/T suffixes
 
 
 ### OSD
