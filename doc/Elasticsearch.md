@@ -17,21 +17,21 @@ Adding '?v' will add colum names + padding, like that:
     host                   ip        heap.percent ram.percent load node.role master name
     dev14.non.3dart.com 127.0.0.1           46          42 1.78 d         m      dev14 [ ex-cluste ]
 
-* `/_cat/` - index of all cats
-* `/_cat/allocation` - disk space/shard allocation summary
-* `/_cat/shards` - list of all shards and their replicas
-* `/_cat/shards/{index}` - list of shards belonging to index
-* `/_cat/master` - master node
-* `/_cat/nodes` - all nodes
-* `/_cat/indices` - health and summary of all indices
-* `/_cat/indices/{index}` - health and summary of one indice
-* `/_cat/segments` - internal data about lucene stuff
-* `/_cat/segments/{index}` - internal data about lucene stuff
-* `/_cat/recovery` - state of recovery
-* `/_cat/recovery/{index}` - state of recovery for one index
-* `/_cat/health` - health + some basic data
-* `/_cat/pending_tasks` - tasks
-* `/_cat/aliases` - aliases
-* `/_cat/aliases/{alias}` - one alias
-* `/_cat/thread_pool` - count of active threads in pool
-* `/_cat/plugins` - installed plugins
+* [`/_cat/`](http://localhost:9200/_cat/?v) - index of all cats
+* [`/_cat/allocation`](http://localhost:9200/_cat/allocation?v) - disk space/shard allocation summary
+* [`/_cat/shards`](http://localhost:9200/_cat/shards?v) - list of all shards and their replicas
+* [`/_cat/shards/{index}`](http://localhost:9200/_cat/shards/{index}?v) - list of shards belonging to index
+* [`/_cat/master`](http://localhost:9200/_cat/master?v) - master node
+* [`/_cat/nodes`](http://localhost:9200/_cat/nodes?v) - all nodes
+* [`/_cat/indices`](http://localhost:9200/_cat/indices?v) - health and summary of all indices
+* [`/_cat/indices/{index}`](http://localhost:9200/_cat/indices/{index}?v) - health and summary of one indice
+* [`/_cat/segments`](http://localhost:9200/_cat/segments?v) - internal data about lucene stuff
+* [`/_cat/segments/{index}`](http://localhost:9200/_cat/segments/{index}?v) - internal data about lucene stuff
+* [`/_cat/recovery`](http://localhost:9200/_cat/recovery?v) - state of recovery
+* [`/_cat/recovery/{index}`](http://localhost:9200/_cat/recovery/{index}?v) - state of recovery for one index
+* [`/_cat/health`](http://localhost:9200/_cat/health?v) - health + some basic data
+* [`/_cat/pending_tasks`](http://localhost:9200/_cat/pending_tasks?v) - tasks
+* [`/_cat/aliases`](http://localhost:9200/_cat/aliases?v) - aliases
+* [`/_cat/aliases/{alias}`](http://localhost:9200/_cat/aliases/{alias}?v) - one alias
+* [`/_cat/thread_pool`](http://localhost:9200/_cat/thread_pool?v) - count of active threads in pool
+* [`/_cat/plugins`](http://localhost:9200/_cat/plugins?v) - installed plugins
