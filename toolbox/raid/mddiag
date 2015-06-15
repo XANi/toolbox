@@ -1,0 +1,161 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Carp qw(croak cluck carp confess);
+use Getopt::Long qw(:config auto_help);
+use File::Slurp qw(read_file);
+use Pod::Usage;
+use Data::Dumper;
+use subs qw(load_md_info);
+
+my $cfg = { # default config values go here
+};
+my $help;
+
+GetOptions(
+) or pod2usage(
+    -verbose => 2,  #2 is "full man page" 1 is usage + options ,0/undef is only usage
+    -exitval => 1,   #exit with error code if there is something wrong with arguments so anything depending on exit code fails too
+);
+
+# some options are required, display short help if user misses them
+my $required_opts = [ ];
+my $missing_opts;
+foreach (@$required_opts) {
+    if (!defined( $cfg->{$_} ) ) {
+        push @$missing_opts, $_
+    }
+}
+
+if ($help || defined( $missing_opts ) ) {
+    my $msg;
+    my $verbose = 2;
+    if (!$help && defined( $missing_opts ) ) {
+        $msg = 'Opts ' . join(', ',@$missing_opts) . " are required!\n";
+        $verbose = 1; # only short help on bad arguments
+    }
+    pod2usage(
+        -message => $msg,
+        -verbose => $verbose, #exit code doesnt work with verbose > 2, it changes to 1
+    );
+}
+my $md_status = {};
+open(F, '<', '/proc/mdstat') or croak("$!");
+while(<F>) {
+    chomp;
+    if ($_ =~ /^(md\d+)\s*:\s*([a-z0-9]+)\s+([a-z0-9]+)/) {
+        my ($dev, $status, $level) = ( $1, $2, $3);
+        $md_status->{$dev}{'array_state'} = $status;
+        $md_status->{$dev}{'level'} = $level;
+        load_md_info($dev,$md_status->{$dev});
+        load_component_info($dev,$md_status->{$dev});
+    }
+}
+
+print Dumper $md_status;
+
+sub load_md_info {
+    my $md = shift;
+    my $md_info = shift;
+    my $path = '/sys/devices/virtual/block/' . $md . '/md';
+    # file name -> var name
+    my $map = {
+        component_size => 'component_size',
+        degraded => 'degraded',
+        layout => 'layout',
+        level => 'level',
+        mismatch_cnt => 'mismatch_cnt',
+        sync_action => 'sync_action',
+        chunk_size => 'chunk_size',
+        array_state => 'array_state',
+        'bitmap/chunksize' => 'bitmap_chunksize',
+        'bitmap/backlog' => 'bitmap_backlog',
+        'bitmap/metadata' => 'bitmap_metadata',
+    };
+    while( my ($k, $v) = each (%{ $map }))  {
+        my $f = "$path/$k";
+        if ( -e $f) {
+            my $t = read_file($f);
+            chomp $t;
+            $md_info->{$v} = $t;
+
+        }
+    }
+}
+
+sub load_component_info {
+    my $md = shift;
+    my $md_info = shift;
+    my $path = '/sys/devices/virtual/block/' . $md . '/md';
+    my $map = {
+        bad_blocks => 'bad_blocks',
+        errors => 'errors',
+        unacknowledged_bad_blocks => 'unacknowledged_bad_blocks',
+        size => 'size',
+        slot => 'slot',
+    };
+    while(glob("$path/dev-*")) {
+        my $path = $_;
+        my ($dev) = m{md/dev-([a-z\d]+)};
+        $md_info->{'components'}{$dev} ||= {};
+        my $comp = $md_info->{'components'}{$dev};
+        while( my ($k, $v) = each (%{ $map }))  {
+            my $f = "$path/$k";
+            if ( -e $f) {
+                my $t = read_file($f);
+                chomp $t;
+                $comp->{$v} = $t;
+            }
+        }
+    }
+
+}
+
+
+
+
+__END__
+
+=head1 NAME
+
+foobar - get foo from bar
+
+=head1 SYNOPSIS
+
+foobar --option1 val1
+
+=head1 DESCRIPTION
+
+Does foo to bar
+
+=head1 OPTIONS
+
+parameters can be shortened if unique, like  --add -> -a
+
+=over 4
+
+=item B<--option1> val2
+
+sets option1 to val2. Default is val1
+
+=item B<--help>
+
+display full help
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item B<foobar>
+
+Does foo to bar with defaults
+
+=item B<foobar --bar bar2>
+
+Does foo to specified bar
+
+=back
+
+=cut
