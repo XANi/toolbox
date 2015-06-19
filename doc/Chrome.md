@@ -1,11 +1,13 @@
 
 # Internal links
 
-* [chrome://net-internals](Net internals)
-* [chrome://quota-internals](Quota internals)
-* [chrome://quota-internals](Sync internals)
-* [chrome://dns](DNS cache data)
-* [chrome://memory](System browser {incl other browsers in system} meminfo)
-* [chrome://memory-internals](Chrome memory details)
-* [chrome://sessions](Sessions)
-* [chrome://about](All commands)
+Sadly those are unlinkable from html
+
+* Net internals - `chrome://net-internals`
+* Quota internals - `chrome://quota-internals`
+* Sync internals - `chrome://quota-internals`
+* DNS cache data - `chrome://dns`
+* System browser {incl other browsers in system} meminfo - `chrome://memory`
+* Chrome memory details - `chrome://memory-internals`
+* Sessions - `chrome://sessions`
+* All commands - `chrome://about`
