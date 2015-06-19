@@ -8,6 +8,7 @@ Simple benchmarks I use for comparing platforms
 bunch of notes and cheatsheets about sysadmin stuff
 
 * [Ceph](doc/Ceph.md)
+* [Chrome](doc/Chrome.md)
 * [Elasticsearch](doc/Elasticsearch.md)
 * [Exim](doc/Exim.md)
 * [Galera](doc/Galera.md)
