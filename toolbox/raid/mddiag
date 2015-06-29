@@ -6,26 +6,21 @@ use Getopt::Long qw(:config auto_help);
 use File::Slurp qw(read_file);
 use Pod::Usage;
 use Data::Dumper;
-use subs qw(load_md_info);
+use Term::ANSIColor;
+use subs qw(load_md_info summary format_bytes);
 
 my $cfg = { # default config values go here
 };
 my $help;
 
 GetOptions(
+    'debug'        => \$cfg->{'debug'},
+#    'pidfile=s'       => \$cfg->{'pidfile'},
+    'help'          => \$help,
 ) or pod2usage(
     -verbose => 2,  #2 is "full man page" 1 is usage + options ,0/undef is only usage
     -exitval => 1,   #exit with error code if there is something wrong with arguments so anything depending on exit code fails too
 );
-
-# some options are required, display short help if user misses them
-my $required_opts = [ ];
-my $missing_opts;
-foreach (@$required_opts) {
-    if (!defined( $cfg->{$_} ) ) {
-        push @$missing_opts, $_
-    }
-}
 
 if ($help || defined( $missing_opts ) ) {
     my $msg;
@@ -51,8 +46,88 @@ while(<F>) {
         load_component_info($dev,$md_status->{$dev});
     }
 }
+if ($cfg->{'debug'}) {
+    print Dumper $md_status;
+}
+summary($md_status);
 
-print Dumper $md_status;
+sub summary {
+    my $status = shift;
+    while ( my ($md_name, $md) = each(%$status)) {
+        if ($md->{'degraded'}) {
+            print color('bold yellow')
+        }
+        elsif($md->{'array_state'} !~ /(active|clean)/) {
+            print color('bold red')
+        }
+        elsif($md->{'sync_action'} eq 'resync') {
+            print color('bold magenta')
+        }
+        elsif($md->{'mismatch_cnt'}) {
+            print color('bold magenta')
+        }
+        else {
+            print color('bold blue')
+        }
+
+        print "$md_name:\t"
+            . "$md->{'level'}\t"
+            . "[$md->{'array_state'}:$md->{'sync_action'}]\t"
+            . "component: " . format_bytes($md->{'component_size'} * 1024) . "\t"
+            . "";
+        if ($md->{'chunk_size'}) {
+            print "chunk: " . format_bytes($md->{'chunk_size'}) . "\t";
+        }
+
+        if ($md->{'mismatch_cnt'}) {
+            print color('bold red') . "mismatched: $md->{'mismatch_cnt'}";
+            if ($md->{'level'} eq 'raid1') {
+                print color('bold white') . ' (normal if its swap/lvm+swap on RAID1)'
+            }
+        }
+        print color('reset') . "\n";
+        my $slot_to_comp = {};
+        while(my ($comp_name, $comp) = each  %{ $md->{'components'} } ) {
+            $slot_to_comp->{ $comp->{'slot'} } = $comp_name;
+        }
+        foreach my $id (sort keys %$slot_to_comp) {
+            my $name = $slot_to_comp->{$id};
+            my $comp = $md->{'components'}{ $name };
+            print "  ";
+            if ($comp->{'bad_blocks'} || $comp->{'unacknowledged_bad_blocks'}) {
+                print color('bold red');
+            }
+            elsif ($comp->{'state'} !~ /(spare|in_sync)/ || $comp->{'errors'}) {
+                print color('bold yellow')
+            }
+            elsif ($id !~ /\d+/) {
+                print color('bold cyan');
+            }
+            else {
+                print color('bold green');
+            }
+            print "$id\t$slot_to_comp->{$id}\t";
+            print format_bytes($comp->{'size'} * 1024) . "\t";
+            print $comp->{'state'} . "\t";
+            if ( $comp->{'errors'} ) {
+                print color('bold red') . "E: $comp->{'errors'}\t";
+            }
+            if ($comp->{'bad_blocks'}) {
+                my $bb =  $comp->{'bad_blocks'};
+                $bb =~ s/^(.{0,32})(.*)$/$1/;
+                if (length($comp->{'bad_blocks'}) > 32) {
+                    $bb .= "+++";
+                }
+                print color('bold red') . "BB: $bb\t"
+
+            }
+
+            print color('reset'). "\n";
+        }
+    }
+}
+
+
 
 sub load_md_info {
     my $md = shift;
@@ -83,6 +158,15 @@ sub load_md_info {
     }
 }
 
+sub format_bytes {
+   my $c = shift || 0;
+   $c >= 1073741824 ? sprintf("%0.2fGB", $c/1073741824)
+      : $c >= 1048576 ? sprintf("%0.2fMB", $c/1048576)
+      : $c >= 1024 ? sprintf("%0.0fKB", $c/1024)
+      : $c . "B";
+}
+
+
 sub load_component_info {
     my $md = shift;
     my $md_info = shift;
@@ -93,6 +177,7 @@ sub load_component_info {
         unacknowledged_bad_blocks => 'unacknowledged_bad_blocks',
         size => 'size',
         slot => 'slot',
+        state => 'state',
     };
     while(glob("$path/dev-*")) {
         my $path = $_;
