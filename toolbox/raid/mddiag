@@ -22,13 +22,9 @@ GetOptions(
     -exitval => 1,   #exit with error code if there is something wrong with arguments so anything depending on exit code fails too
 );
 
-if ($help || defined( $missing_opts ) ) {
+if ($help) {
     my $msg;
     my $verbose = 2;
-    if (!$help && defined( $missing_opts ) ) {
-        $msg = 'Opts ' . join(', ',@$missing_opts) . " are required!\n";
-        $verbose = 1; # only short help on bad arguments
-    }
     pod2usage(
         -message => $msg,
         -verbose => $verbose, #exit code doesnt work with verbose > 2, it changes to 1
@@ -107,7 +103,7 @@ sub summary {
                 print color('bold green');
             }
             print "$id\t$slot_to_comp->{$id}\t";
-            print format_bytes($comp->{'size'} * 1024) . "\t";
+            print format_bytes($comp->{'size'} * 1024) . " \t";
             print $comp->{'state'} . "\t";
             if ( $comp->{'errors'} ) {
                 print color('bold red') . "E: $comp->{'errors'}\t";
@@ -155,6 +151,9 @@ sub load_md_info {
             $md_info->{$v} = $t;
 
         }
+    }
+    if ($md_info->{'level'} eq 'raid0') {
+        $md_info->{'sync_action'} = 'none';
     }
 }
 
