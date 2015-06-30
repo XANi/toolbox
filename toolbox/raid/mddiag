@@ -7,7 +7,7 @@ use File::Slurp qw(read_file);
 use Pod::Usage;
 use Data::Dumper;
 use Term::ANSIColor;
-use subs qw(load_md_info summary format_bytes);
+use subs qw(load_md_info summary format_bytes add_disk);
 
 my $cfg = { # default config values go here
 };
@@ -15,7 +15,6 @@ my $help;
 
 GetOptions(
     'debug'        => \$cfg->{'debug'},
-#    'pidfile=s'       => \$cfg->{'pidfile'},
     'help'          => \$help,
 ) or pod2usage(
     -verbose => 2,  #2 is "full man page" 1 is usage + options ,0/undef is only usage
@@ -31,6 +30,7 @@ if ($help) {
     );
 }
 my $md_status = {};
+my $disk_list = {};
 open(F, '<', '/proc/mdstat') or croak("$!");
 while(<F>) {
     chomp;
@@ -121,6 +121,26 @@ sub summary {
             print color('reset'). "\n";
         }
     }
+
+    my $unused_disks = [];
+    for  (glob('/sys/block/*')) {
+        my ($dev) = m{/sys/block/((xv|v|s|h)d.+)};
+        if (defined $dev){
+            if(!defined($disk_list->{$dev})) {
+                push @$unused_disks, $dev
+            }
+        }
+    }
+
+    if (scalar @$unused_disks > 0) {
+        print color("bold yellow") . "== Unused disks ==\n";
+        for my $dev (sort @$unused_disks) {
+            print color("bold green") . "\t$dev\t";
+            print format_bytes(1024 * read_file("/sys/block/$dev/size"));
+            print "\n";
+        }
+    }
+
 }
 
 
@@ -181,6 +201,7 @@ sub load_component_info {
     while(glob("$path/dev-*")) {
         my $path = $_;
         my ($dev) = m{md/dev-([a-z\d]+)};
+        add_disk($dev, $md);
         $md_info->{'components'}{$dev} ||= {};
         my $comp = $md_info->{'components'}{$dev};
         while( my ($k, $v) = each (%{ $map }))  {
@@ -192,10 +213,16 @@ sub load_component_info {
             }
         }
     }
-
 }
 
-
+sub add_disk {
+    my $dev = shift;
+    my $md = shift;
+    $dev =~ s/\d+$//g;
+    $disk_list->{$dev} ||= [];
+    push @{ $disk_list->{$dev} }, $md;
+}
+ #   my $disk_list = {};
 
 
 __END__
