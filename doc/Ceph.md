@@ -44,6 +44,12 @@ Note that create options cant modify existing permissions, you have to use `auth
 
 ### Rados GW
 
+#### Common ops
+
+* `radosgw-admin user create --uid="username" --display-name="long username"`
+* `radosgw-admin user rm --uid=username`
+* `radosgw-admin bucket list`
+
 #### Create pools
 `for a in .rgw.root .rgw.control .rgw.gc .rgw.buckets .rgw.buckets.index .rgw.buckets.extra .log .intent-log .usage .users .users.email .users.swift .users.uid ; do ceph osd pool create $a 16 16 ; done`
 

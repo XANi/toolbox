@@ -62,6 +62,9 @@ sub summary {
         elsif($md->{'mismatch_cnt'}) {
             print color('bold magenta')
         }
+        elsif($md->{'sync_action'} eq 'repair') {
+            print color('bold yellow')
+        }
         else {
             print color('bold blue')
         }
