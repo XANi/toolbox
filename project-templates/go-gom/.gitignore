@@ -7,3 +7,9 @@
 DEADJOE
 # compiled files
 _vendor/
+*\.test
+
+# various output files
+*.out
+
+
