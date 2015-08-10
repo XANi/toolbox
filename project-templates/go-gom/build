@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Jenkins +  golang plugin compatible builder/test
+# test will be outputted in report.xml
+
+if [ "z$GOPATH" = "z" ] ; then
+    if [ "z$WORKSPACE" = "z" ] ; then
+        echo "No WORKSPACE, using tmp/go as GOPATH"
+        export GOPATH="$(pwd)/tmp/go"
+        mkdir -p "$GOPATH"
+    else
+        export GOPATH="$WORKSPACE/go"
+    fi
+fi
+
+echo "=== adding GOPATH/bin '$GOPATH/bin' to path"
+export PATH="$GOPATH/bin:$PATH"
+
+echo "=== using $GOPATH as GOPATH"
+if [ "z$GOROOT" != "z" ] ; then
+    echo "=== adding GOROOT $GOROOT/bin to PATH"
+    export PATH="$GOROOT/bin:$PATH"
+fi
+if $(which go >/dev/null 2>&1)  ; then
+    echo -n "using "
+    go version
+else
+    echo "=== Install Go in path first!"
+    exit 1
+fi
+
+
+echo "=== installing deps"
+if $(which gom >/dev/null 2>&1)  ; then
+    echo "=== Gom installed"
+else
+    echo "=== Installing Gom"
+    go get github.com/mattn/gom
+fi
+
+if $(which go-junit-report >/dev/null 2>&1) ;then
+    echo "=== go-junit-report installed"
+else
+    go get github.com/jstemmer/go-junit-report
+fi
+
+
+
+echo "=== building package version" $(make version)
+make
+echo "=== running tests"
+gom exec go test -v | go-junit-report > report.xml
