@@ -11,5 +11,10 @@ _vendor/
 
 # various output files
 *.out
+cover-cobertura.xml
+cover.json
+report.xml
 
 
+# main app files
+main

@@ -8,3 +8,6 @@ all: dep
 
 dep:
 	gom install
+
+version:
+	@echo $(version)
