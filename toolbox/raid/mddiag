@@ -96,6 +96,9 @@ sub summary {
             if ($comp->{'bad_blocks'} || $comp->{'unacknowledged_bad_blocks'}) {
                 print color('bold red');
             }
+            elsif ($comp->{'state'} =~ /fault/) {
+                print color('bold red');
+            }
             elsif ($comp->{'state'} !~ /(spare|in_sync)/ || $comp->{'errors'}) {
                 print color('bold yellow')
             }
