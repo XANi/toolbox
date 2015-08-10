@@ -58,12 +58,14 @@ else
 fi
 
 
-
-
 echo "=== building package version" $(make version)
 make
 echo "=== running tests"
-gom exec go test -v -coverprofile=cover.out | go-junit-report > report.xml
+if [ -e Gomfile ] ; then
+    gom exec go test -v -coverprofile=cover.out | go-junit-report > report.xml
+else
+    go test -v -coverprofile=cover.out | go-junit-report > report.xml
+fi
 # cleanup resulting file, else any coverage tool fails with can't find "cmd.go": cannot find package "_/repo/path"
 sed -i -e "s#.*/\(.*\.go\)#\./\\1#" cover.out
 
