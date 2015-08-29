@@ -7,6 +7,8 @@ Simple benchmarks I use for comparing platforms
 ## [Notes](doc/)
 bunch of notes and cheatsheets about sysadmin stuff
 
+* [Bird](doc/Bird.md)
+* [Bookmarks](doc/bookmarks.md)
 * [Ceph](doc/Ceph.md)
 * [Chrome](doc/Chrome.md)
 * [Elasticsearch](doc/Elasticsearch.md)
@@ -19,7 +21,6 @@ bunch of notes and cheatsheets about sysadmin stuff
 * [Mysql](doc/Mysql.md)
 * [RAID](doc/RAID.md)
 * [RPM](doc/RPM.md)
-* [Bookmarks](doc/bookmarks.md)
 * [Software](doc/software.md)
 
 ## [Project templates](project-templates/)
