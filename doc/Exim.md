@@ -8,3 +8,4 @@ Mostly stolen from [Exim Cheatsheet](http://bradthemad.org/tech/notes/exim_cheat
 * `exim -q -v` - run queue
 * `exim -M <message-id> ` - force message delivery
 * `exiqgrep -zi | xargs exim -M` - force delivery of all frozen messages
+* `exim -Mrm <message-id>` - remove message from queue
