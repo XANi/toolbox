@@ -41,6 +41,11 @@ Note that create options cant modify existing permissions, you have to use `auth
     ceph auth del osd.{osd-num}
     ceph osd rm {osd-num}
 
+#### osd recovery
+
+* `ceph osd set noin` - do not add new ones automatically
+* `ceph osd set nobackfill` - do not start backfill
+* `ceph osd set norecover` - do not start recovery
 
 ### Rados GW
 
