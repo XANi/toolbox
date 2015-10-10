@@ -23,6 +23,7 @@ bunch of notes and cheatsheets about sysadmin stuff
 * [RAID](doc/RAID.md)
 * [RPM](doc/RPM.md)
 * [Software](doc/software.md)
+* [Suricata](doc/Suricata.md)
 
 ## [Project templates](project-templates/)
 ready-to-go project dir layout

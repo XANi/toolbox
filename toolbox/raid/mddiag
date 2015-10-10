@@ -21,6 +21,7 @@ GetOptions(
     -exitval => 1,   #exit with error code if there is something wrong with arguments so anything depending on exit code fails too
 );
 
+
 if ($help) {
     my $msg;
     my $verbose = 2;
@@ -65,6 +66,9 @@ sub summary {
         elsif($md->{'sync_action'} eq 'repair') {
             print color('bold yellow')
         }
+        elsif($md->{'sync_action'} =~ 'shape') {
+            print color('bold magenta')
+        }
         else {
             print color('bold blue')
         }
@@ -85,6 +89,13 @@ sub summary {
             }
         }
         print color('reset') . "\n";
+        if ($md->{'sync_speed'} =~ /\d/ || $md->{'sync_completed'} =~ /\d/) {
+            print color('bold yellow') . "Speed: " . format_bytes($md->{'sync_speed'} * 1024) . "/s ";
+            if ($md->{'sync_completed'} =~ /\d/) {
+                print color ('bold yellow') . $md->{'sync_completed'};
+            }
+            print "\n";
+        }
         my $slot_to_comp = {};
         while(my ($comp_name, $comp) = each  %{ $md->{'components'} } ) {
             $slot_to_comp->{ $comp->{'slot'} } = $comp_name;
@@ -127,7 +138,7 @@ sub summary {
             print color('reset'). "\n";
         }
     }
-
+    #  unused disks
     my $unused_disks = [];
     for  (glob('/sys/block/*')) {
         my ($dev) = m{/sys/block/((xv|v|s|h)d.+)};
@@ -163,6 +174,8 @@ sub load_md_info {
         level => 'level',
         mismatch_cnt => 'mismatch_cnt',
         sync_action => 'sync_action',
+        sync_speed => 'sync_speed',
+        sync_completed => 'sync_completed',
         chunk_size => 'chunk_size',
         array_state => 'array_state',
         'bitmap/chunksize' => 'bitmap_chunksize',

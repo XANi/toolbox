@@ -1,2 +1,10 @@
 requires 'YAML::XS';
 requires 'common::sense';
+
+on test => sub {
+    requires 'TAP::Formatter::JUnit';
+    requires 'Test::More';
+    requires 'Test::Exception';
+    requires 'Devel::Cover';
+    requires 'Devel::Cover::Report::Clover';
+}
