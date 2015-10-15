@@ -4,3 +4,6 @@ Those should in *theory* make your server boot into bios on next reboot... in pr
 
 * `ipmitool chassis bootdev bios` - set "next boot device" to bios
 * `ipmitool chassis bootparam set bootflag force_bios`
+
+
+* `ipmitool mc watchdog get` - get watchdog status
