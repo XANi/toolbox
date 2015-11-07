@@ -5,6 +5,8 @@
 \#*\#
 DEADJOE
 *.orig
+tags
+TAGS
 #
 blib/
 .build/

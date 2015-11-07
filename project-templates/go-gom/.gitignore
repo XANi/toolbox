@@ -10,6 +10,8 @@ DEADJOE
 # compiled files
 _vendor/
 *\.test
+tags
+TAGS
 
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o
