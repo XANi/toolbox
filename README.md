@@ -20,6 +20,7 @@ bunch of notes and cheatsheets about sysadmin stuff
 * [KVM](doc/KVM.md)
 * [LVM](doc/LVM.md)
 * [Mysql](doc/Mysql.md)
+* [RabbitMQ](doc/RabbitMQ.md)
 * [RAID](doc/RAID.md)
 * [RPM](doc/RPM.md)
 * [Software](doc/software.md)
