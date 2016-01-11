@@ -9,6 +9,7 @@ bunch of notes and cheatsheets about sysadmin stuff
 
 * [Bird](doc/Bird.md)
 * [Bookmarks](doc/bookmarks.md)
+* [Brocade](doc/Brocade.md)
 * [Ceph](doc/Ceph.md)
 * [Chrome](doc/Chrome.md)
 * [Elasticsearch](doc/Elasticsearch.md)
@@ -20,11 +21,12 @@ bunch of notes and cheatsheets about sysadmin stuff
 * [KVM](doc/KVM.md)
 * [LVM](doc/LVM.md)
 * [Mysql](doc/Mysql.md)
-* [RabbitMQ](doc/RabbitMQ.md)
 * [RAID](doc/RAID.md)
 * [RPM](doc/RPM.md)
+* [RabbitMQ](doc/RabbitMQ.md)
 * [Software](doc/software.md)
 * [Suricata](doc/Suricata.md)
+* [Wireshark](doc/Wireshark.md)
 
 ## [Project templates](project-templates/)
 ready-to-go project dir layout
