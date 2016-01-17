@@ -5,7 +5,7 @@ just some random scripts, some are quick hacks or experimental stuff so watch ou
 Simple benchmarks I use for comparing platforms
 
 ## [Notes](doc/)
-bunch of notes and cheatsheets about sysadmin stuff
+Bunch of notes and cheatsheets about sysadmin stuff
 
 * [Bird](doc/Bird.md)
 * [Bookmarks](doc/bookmarks.md)
