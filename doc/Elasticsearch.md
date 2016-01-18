@@ -40,7 +40,7 @@ Adding '?v' will add colum names + padding, like that:
 ### useful commands
 
 * `curl -XPOST 'http://localhost:9200/_cluster/nodes/_local/_shutdown?delay=60s'` - notify cluster you are shutting down then exit after 60 seconds. instead of local you can specify nodes separated by `,` , attributes like `rack:2` or keywords like `_master` or `_all`. `*` can be used too on any of those for example `ra*:2*`
-* `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.enable": "none"}}` - disable reallocating shards. Useful if you want to restart one of nodes without too much reshuffling
+* `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.enable": "none"}}'` - disable reallocating shards. Useful if you want to restart one of nodes without too much reshuffling
 * `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.enable": "all"}}'` - re-enable reallocation
 * `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.cluster_concurrent_rebalance": "6"}}'` - change concurrent rebalance limit for whole cluster
 * `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.node_concurrent_recoveries": 15}}'` - change concurrent recoveries on node
