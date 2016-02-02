@@ -24,6 +24,7 @@ Note that create options cant modify existing permissions, you have to use `auth
 ### Volume management
 
 * `rbd create mypool/myimage --size 102400` - create 100GB image. THIS IS IN MEGABYTES and it doesnt support usual k/M/G/T suffixes
+!
 
 
 ### OSD

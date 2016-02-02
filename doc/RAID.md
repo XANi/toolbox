@@ -64,10 +64,13 @@ Naming:
     * `NORA|RA|ADRA` - read-ahead policy
     * `Direct|Cached` - if cached reads are cached in controller's memory
     * `CachedBadBBU|NoCachedBadBBU` - if writes are still cached when battery is bad
-* `megacli -CfgClr -aALL` - **CLEAR ALL CONFIG OF EVERYTHING
+* `megacli -CfgClr -aALL` - **CLEAR ALL CONFIG OF EVERYTHING**
+* `megacli -CfgForeign -Clear -aALL` - clear config of foreign (marked `Foreign State: Foreign` in PD info)
 * `megacli -PDOnline -Physdrv '[3:1]'` - force drive status to online - if you want to do something with disk stuck in Error` state
 * `megacli -CfgLdAdd -r0 [3:1] WT NORA Cached -a0` - add closest equivalent to "passthru" on some MegaRAID controllers that can't be flashed into IT mode
 * `megacli -PDList -aALL |grep -P -i '(Slot Number|Firmware state|Coerced size|Enclosure device)' |perl -pe 's/Enclosure/\nEnclosure/g' |less` - short status summary
+* `megacli -EncInfo -aALL` - enclosure info
+* `megacli -AdpBbuCmd -aALL` - battery info
 * `megacli -AdpSetProp -AlarmSilence -aALL` - silence current alarm (will still trigger on next)
 * `megacli -PDRbld -ShowProg -PhysDrv [3:1] -aALL` - show raid rebuild progress
 * `megacli -adpsetprop -enablejbod -1 -a0` - JBOD disks (works on LSI 2208, **doesnt** on 2108)
@@ -90,6 +93,14 @@ Naming:
 * `megacli -PDOffline -PhysDrv '[252:1]' -a0` - this will make controller make loud noises
 * `megacli -PDMarkMissing -PhysDrv '[252:1]' -a0 - this will make controller stop making loud noises
 * `megacli -PdPrpRmv -PhysDrv '[252:1]' -a0` this will stop drive
+
+### clear drive
+
+remove config and start disk clear
+
+* `megacli -CfgClr -aALL` - clear all config
+* `megacli -PDClear -Start -PhysDrv [252:3] -a0` - start clear on device 252:3 (change to `-Stop` to stop)
+* `megacli -PDClear -ShowProg -PhysDrv [252:2] -a0` - show progress
 
 ### flashing
 
