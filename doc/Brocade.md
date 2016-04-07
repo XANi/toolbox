@@ -1,4 +1,4 @@
-## ICX
+ ad## ICX
 
 * packet capture:
 
@@ -51,3 +51,4 @@ or `port-side-intake`
 ## CER
 
 `clear ip bgp neighbor x.y.z.v/AS`
+`show ip bgp neighbors z.y.x.v advertised-routes`
