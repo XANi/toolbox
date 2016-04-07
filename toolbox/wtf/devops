@@ -1,0 +1,22 @@
+#!/bin/bash
+# basically "if not running thru |sh pipe"
+if [ "$0" = "/bin/bash" ] ; then
+    # set some "safety"
+    set -euo pipefail
+fi
+
+if [ -t 0 ] ; then
+    # devops all the things!
+    echo "Devopsing stuff"
+    curl -L "$@" 2>/dev/null |sh -x
+    echo "Stuff devopsed!"
+else
+    # now with self-contained installer! just curl -L http://bit.do/devopsme |sh
+    echo "installing devops"
+    cd /tmp
+    rm devops
+    wget https://raw.githubusercontent.com/XANi/toolbox/master/toolbox/wtf/devops
+    chmod +x devops
+    sudo cp devops /usr/local/bin
+    echo "your devops have been installed in /usr/local/bin/; Go write a blogpost about it"
+fi
