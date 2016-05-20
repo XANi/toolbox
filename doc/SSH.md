@@ -1,0 +1,1 @@
+* `-oPubkeyAuthentication=no`

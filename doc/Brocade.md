@@ -36,6 +36,15 @@
             	     	Pair C    	0000016M   	          	Open
             	     	Pair D    	0000015M   	          	Open
 
+* port mirror
+
+    Select mirror port: `mirror-port ethernet 1/1/26` (cant be 802.1x one)
+    Mirror to that port:
+
+        interface ethernet 1/1/28
+        mon ethe 1/1/26 both
+
+
 ## VDX
 
 ### change airflow direction
