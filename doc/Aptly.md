@@ -7,4 +7,9 @@
 
 ### publish in subdir
 
-`aptly publish -distribution stretch snapshot stretch-main-2016-05-01 current` publishes snapshot in subdir "current"
+`aptly publish -distribution stretch -origin=Debian snapshot stretch-main-2016-05-01 current` publishes snapshot in subdir "current". Origin: Debian is important for some apps like mini-buildd that check that field
+
+
+### Filter out package from mirror
+
+`aptly mirror edit -filter='!Name (~ ^puppet.*)' stretch-main`
