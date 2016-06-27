@@ -35,7 +35,7 @@ my $disk_list = {};
 open(F, '<', '/proc/mdstat') or croak("$!");
 while(<F>) {
     chomp;
-    if ($_ =~ /^(md\d+)\s*:\s*([a-z0-9]+)\s+([a-z0-9]+)/) {
+    if ($_ =~ /^(md\d+)\s*:\s*([a-z0-9]+)\s+(?:|\(.*?\)\s+)([a-z0-9]+)/) {
         my ($dev, $status, $level) = ( $1, $2, $3);
         $md_status->{$dev}{'array_state'} = $status;
         $md_status->{$dev}{'level'} = $level;
@@ -54,7 +54,7 @@ sub summary {
         if ($md->{'degraded'}) {
             print color('bold yellow')
         }
-        elsif($md->{'array_state'} !~ /(active|clean)/) {
+        elsif($md->{'array_state'} !~ /(active|clean|read-auto)/) {
             print color('bold red')
         }
         elsif($md->{'sync_action'} eq 'resync') {

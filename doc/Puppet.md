@@ -9,3 +9,13 @@
         ensure => installed
         install_options => ' -t testing'
     }
+
+
+# Coding
+
+https://docs.puppet.com/guides/custom_types.html
+
+## Raise error from ruby
+
+`raise ArgumentError, "error breaking the run`
+`raise Puppet::Error, "different error type"`
