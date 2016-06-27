@@ -50,7 +50,8 @@ summary($md_status);
 
 sub summary {
     my $status = shift;
-    while ( my ($md_name, $md) = each(%$status)) {
+    foreach my $md_name(sort keys %$status) {
+        my $md = $status->{$md_name};
         if ($md->{'degraded'}) {
             print color('bold yellow')
         }
@@ -89,7 +90,7 @@ sub summary {
             }
         }
         print color('reset') . "\n";
-        if ($md->{'sync_speed'} =~ /\d/ || $md->{'sync_completed'} =~ /\d/) {
+        if ($md->{'sync_action'} ne 'none' && ($md->{'sync_speed'} =~ /\d/ || $md->{'sync_completed'} =~ /\d/)) {
             print color('bold yellow') . "Speed: " . format_bytes($md->{'sync_speed'} * 1024) . "/s ";
             if ($md->{'sync_completed'} =~ /\d/) {
                 print color ('bold yellow') . $md->{'sync_completed'};
