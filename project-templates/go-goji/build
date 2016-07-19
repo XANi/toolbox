@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# Jenkins +  golang plugin compatible builder/test
+# test will be outputted in report.xml
+
+# source golang vars
+
+if $(which go >/dev/null 2>&1)  ; then
+    echo -n "using "
+    go version
+else
+    echo "=== Install Go in path first!"
+    exit 1
+fi
+
+# get GOARCH/GOOS vars
+go env > .env.sh
+source .env.sh
+
+# try to detect sane gopath
+if [ "z$GOPATH" = "z" ] ; then
+    if [ "z$WORKSPACE" = "z" ] ; then
+        echo "No WORKSPACE, using tmp/go as GOPATH"
+        export GOPATH="$(pwd)/tmp/go"
+        mkdir -p "$GOPATH"
+    else
+        export GOPATH="$WORKSPACE/go"
+    fi
+fi
+echo "=== using $GOPATH as GOPATH"
+if [ "z$GOROOT" != "z" ] ; then
+    echo "=== adding GOROOT $GOROOT/bin to PATH"
+    export PATH="$GOROOT/bin:$PATH"
+fi
+
+echo "=== installing deps"
+if $(which gom >/dev/null 2>&1)  ; then
+    echo "=== Gom installed"
+else
+    echo "=== Installing Gom"
+    go get github.com/mattn/gom
+fi
+
+# try to detect if we are cross-compiling to 32 bit and add that to path
+if [ -d "$GOPATH/bin/${GOOS}_${GOARCH}" ] ; then
+    echo "=== [cross-compile] adding '$GOPATH/bin/${GOOS}_${GOARCH}' to path"
+    export PATH="$GOPATH/bin/${GOOS}_${GOARCH}:$PATH"
+else
+    echo "$GOPATH/bin/$GOOS_$GOARCH"
+    echo "===  adding '$GOPATH/bin' to path"
+    export PATH="$GOPATH/bin:$PATH"
+fi
+
+if $(which go-junit-report >/dev/null 2>&1) ;then
+    echo "=== go-junit-report installed"
+else
+    go get github.com/jstemmer/go-junit-report
+fi
+
+
+if $(which gocov >/dev/null 2>&1) ;then
+    echo "=== gocov installed"
+else
+    go get github.com/axw/gocov/gocov
+fi
+
+if $(which gocov-xml >/dev/null 2>&1) ;then
+    echo "=== gocov-xml installed"
+else
+    go get github.com/AlekSi/gocov-xml
+fi
+
+
+echo "=== building package version" $(make version)
+make
+echo "=== running tests"
+if [ -e Gomfile ] ; then
+    gom exec go test -v -coverprofile=cover.out | go-junit-report > report.xml
+else
+    go test -v -coverprofile=cover.out | go-junit-report > report.xml
+fi
+# cleanup resulting file, else any coverage tool fails with can't find "cmd.go": cannot find package "_/repo/path"
+sed -i -e "s#.*/\(.*\.go\)#\./\\1#" cover.out
+
+echo "Generating cover-cobertura.xml"
+gocov convert cover.out  >cover.json
+cat cover.json |gocov-xml >cover-cobertura.xml
