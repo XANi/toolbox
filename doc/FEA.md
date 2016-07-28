@@ -3,14 +3,15 @@ Children get their parents' last equipped skill (remember that you can rearrange
 | pair A    | pair B  | child     | Notes       |
 |-----------|---------|-----------|-------------|
 | Sumia     | Chrom   | Lucina ♀  | before ch11, pass galeforce |
+| Cordella  | Lon'qu  | Severa ♀  |             |
+| Sully     | ++      | Kjelle  ♀ |             |
+| Nowi      | Donnel  | Nah ♀     |             |
+| Tharja    | Henry   | Noire ♀    | Pass renewal |
+| Miriliel  | Kellam  | Laurent ♂ |             |
 | my unit   | Laurent | Morgan ♂  |             |
 | Lisa      | Ricken  | Owain ♂   |             |
-| Sully     | ++      | Kjelle  ♀ |             |
-| Miriliel  | Kellam  | Laurent ♂ |             |
 | Mirabelle | ???     | Brady ♂   |             |
 | Panne     | Stahl   | Yarne ♂   |             |
-| Cordella  | Lon'qu  | Severa ♀  |             |
-| Nowi      | Donnel  | Nah ♀     |             |
 | Olivia    | ???     | Inigo   ♂ |             |
 | Cherche   | ???     | Gerome  ♂  |             |
-| Tharja    | Henry   | Noire ♀    | Pass renewal |
+
