@@ -1,4 +1,4 @@
- ad## ICX
+## ICX
 
 * packet capture:
 
@@ -22,7 +22,10 @@
 
         copy tftp flash 192.168.251.34 /icx-08.03.0f/ICX64xx/Boot/kxz10105.bin bootrom
         copy tftp flash 192.168.251.34 /icx-08.03.0f/ICX64xx/Images/ICX64S08030f.bin primary
-!
+
+If you want to write to secondary, boot it with `boot system flash secondary`. Confirm flash load with `show flash`
+
+
 * cable test
 
         telnet@switch-g#phy cable-diagnostics tdr 1/1/15
@@ -43,6 +46,10 @@
 
         interface ethernet 1/1/28
         mon ethe 1/1/26 both
+
+### BGP
+
+ * `clear ip bgp neighbor all`
 
 
 ## VDX
