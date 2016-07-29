@@ -9,6 +9,8 @@
         debug packet-capture # starts capture, running again or waiting for 50 packets stops
         no debug all # stops any debug
 
+`debug destination all` - if you cant catch it, log/telnet/ssh destination under `?`
+
 * 802.1x
 
         show mac-authentication sessions all
