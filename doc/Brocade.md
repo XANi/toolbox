@@ -27,6 +27,10 @@
 
 If you want to write to secondary, boot it with `boot system flash secondary`. Confirm flash load with `show flash`
 
+* adding license
+
+        copy tftp license 10.100.100.100 firmware/ICX6610/License/ADV-xxxxxxx.xml unit 2
+
 
 * cable test
 

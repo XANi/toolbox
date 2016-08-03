@@ -9,5 +9,8 @@ all: dep
 dep:
 	gom install
 
+clean:
+	rm -rf _vendor
+
 version:
 	@echo $(version)
