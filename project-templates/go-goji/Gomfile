@@ -1,4 +1,5 @@
 gom 'github.com/op/go-logging'
 gom 'github.com/smartystreets/goconvey/convey'
+gom 'gopkg.in/unrolled/render.v1'
 gom 'goji.io'
 gom 'gopkg.in/yaml.v2'
