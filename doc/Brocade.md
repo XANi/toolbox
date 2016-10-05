@@ -45,6 +45,8 @@ If you want to write to secondary, boot it with `boot system flash secondary`. C
             	     	Pair C    	0000016M   	          	Open
             	     	Pair D    	0000015M   	          	Open
 
+* optics  - `show optic 1/3/1` - requires "optical-monitor" enabled on port
+
 * port mirror
 
     Select mirror port: `mirror-port ethernet 1/1/26` (cant be 802.1x one)
@@ -68,6 +70,11 @@ From non-configure mode:
     chassis fan airflow-direction port-side-exhaust
 
 or `port-side-intake`
+
+
+### random
+
+* `show media interface tengigabitethernet 1/0/33` - show optics
 
 
 ## CER
