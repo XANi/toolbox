@@ -22,3 +22,8 @@ Most of these accept instance and interface (if applicable) in `instance "interf
 * `show ospf neighbors` - show information about OSPF neighbors
 * `show ospf state`     - show information about OSPF network state
 * `show ospf topology`  - show information about OSPF network topology
+
+
+## Filters
+
+* `if net = 0.0.0.0/0 then krt_prefsrc = 1.2.3.4` -  override kernel source ip ( `krt_prefsrc` ) for certain routes. There is a ton more [here](http://bird.network.cz/?get_doc&f=bird-6.html#ss6.6), every tcp parameter can be overriden.

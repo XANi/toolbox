@@ -19,3 +19,10 @@
 
     echo -eth3 > /sys/class/net/bond0123/bonding/slaves
     echo -bond0123 > /sys/class/net/bonding_masters
+
+
+## add multihop route
+
+    ip route add 1.2.3.4/32 scope global \
+    nexthop via 10.100.100.1 weight 1 \
+    nexthop via 10.100.101.1 weight 1
