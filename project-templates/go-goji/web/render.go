@@ -2,7 +2,6 @@ package web
 
 import (
 	"html/template"
-	"golang.org/x/net/context"
 	"net/http"
 	"goji.io/pat"
 	"github.com/op/go-logging"
@@ -30,20 +29,20 @@ func New() (r *Renderer,err error) {
 }
 
 
-func (r *Renderer) Handle(ctx context.Context, w http.ResponseWriter, req *http.Request) {
-	page := pat.Param(ctx, "page")
-	r.HandlePage(page,ctx,w,req)
+func (r *Renderer) Handle( w http.ResponseWriter, req *http.Request) {
+	page := pat.Param(req, "page")
+	r.HandlePage(page,w,req)
 }
-func (r *Renderer) HandleRoot(ctx context.Context, w http.ResponseWriter, req *http.Request) {
+func (r *Renderer) HandleRoot( w http.ResponseWriter, req *http.Request) {
 	page := `index.html`
-	r.HandlePage(page,ctx,w,req)
+	r.HandlePage(page,w,req)
 }
 
-func (r *Renderer) HandleStatus(ctx context.Context, w http.ResponseWriter, req *http.Request) {
+func (r *Renderer) HandleStatus( w http.ResponseWriter, req *http.Request) {
 	r.render.JSON(w, http.StatusOK,  map[string]bool{"ok": true})
 }
 
-func (r *Renderer) HandlePage(page string,ctx context.Context, w http.ResponseWriter, req *http.Request) {
+func (r *Renderer) HandlePage(page string, w http.ResponseWriter, req *http.Request) {
 	t, err := r.getTpl(page)
 	if err != nil {
 		fmt.Fprintf(w, "Page %s not found, err:[%+v]",page,err)

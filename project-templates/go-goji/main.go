@@ -36,7 +36,8 @@ func main() {
 	mux := goji.NewMux()
 	mux.Handle(pat.Get("/static/*"), http.StripPrefix("/static", http.FileServer(http.Dir(`public/static`))))
 	mux.Handle(pat.Get("/apidoc/*"), http.StripPrefix("/apidoc", http.FileServer(http.Dir(`public/apidoc`))))
-	mux.HandleFuncC(pat.Get("/"), renderer.HandleRoot)
-	mux.HandleFuncC(pat.Get("/status"), renderer.HandleStatus)
-	http.ListenAndServe(listenAddr, mux)
+	mux.HandleFunc(pat.Get("/"), renderer.HandleRoot)
+	mux.HandleFunc(pat.Get("/status"), renderer.HandleStatus)
+	log.Warningf("listening on %s", listenAddr)
+	log.Errorf("failed on %s", http.ListenAndServe(listenAddr, mux))
 }
