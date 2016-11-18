@@ -51,6 +51,7 @@ Naming:
 #### array/controller info
 
 * `megacli -AdpAlILog -a0` - full log. Long. Very long and slow.
+* `megacli -AdpAllInfo -a0` - all info
 * `megacli -PDList -aALL` - list all physical devices and their state on all controllers
 * `megacli -PDInfo -PhysDrv '[3:1]' -aALL` - info about single physical drive
 * `megacli -LDInfo  -Lall -a0` - info about all LD on same controller
@@ -66,7 +67,7 @@ Naming:
     * `CachedBadBBU|NoCachedBadBBU` - if writes are still cached when battery is bad
 * `megacli -CfgClr -aALL` - **CLEAR ALL CONFIG OF EVERYTHING**
 * `megacli -CfgForeign -Clear -aALL` - clear config of foreign (marked `Foreign State: Foreign` in PD info)
-* `megacli -PDOnline -Physdrv '[3:1]'` - force drive status to online - if you want to do something with disk stuck in Error` state
+* `megacli -PDOnline -Physdrv '[3:1]'` - force drive status to online - if you want to do something with disk stuck in `Error` state
 * `megacli -CfgLdAdd -r0 [3:1] WT NORA Cached -a0` - add closest equivalent to "passthru" on some MegaRAID controllers that can't be flashed into IT mode
 * `megacli -PDList -aALL |grep -P -i '(Slot Number|Firmware state|Coerced size|Enclosure device)' |perl -pe 's/Enclosure/\nEnclosure/g' |less` - short status summary
 * `megacli -EncInfo -aALL` - enclosure info
@@ -77,6 +78,7 @@ Naming:
     it should detect your drives right after you ran command, it only touches unconfigured drives so you might want to clear config first
     Also, IBM BIOS can be retarded about it and sometimes you need to set boot device to **Legacy** to have bootable system
 * `megacli -CfgEachDskRaid0 WT NORA Direct NoCachedBadBBU -aALL` - make a bunch of RAID0s from disks. You probably want JBOD mode  if possible (2108 will return ok but fail)
+* `megacli -LDSetProp -ForcedWB -Immediate -LALL -a0` - force writeback, needed on flash-based cache unit
 
 #### Boot manager
 
