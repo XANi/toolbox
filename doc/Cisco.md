@@ -11,3 +11,7 @@ To avoid that idiocy add
 
 * `clear ip ospf process` restart OSPF process, it can hang with older versions
 * `router ospf 9` -> `maximum-paths 8` bump max path from 4
+
+## tunnel detail
+
+* `show crypto session detail` show ssl sessions
