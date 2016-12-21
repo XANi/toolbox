@@ -18,6 +18,7 @@ Bunch of notes and cheatsheets about sysadmin stuff
 * [Grub](doc/Grub.md)
 * [IPSec](doc/IPSec.md)
 * [IProute2](doc/iproute.md)
+* [Java](doc/Java.md)
 * [Juniper](doc/Juniper.md)
 * [Routing](doc/Routing.md)
 * [KVM](doc/KVM.md)
