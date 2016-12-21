@@ -9,6 +9,7 @@
 DEADJOE
 # compiled files
 _vendor/
+vendor/
 *\.test
 tags
 TAGS
@@ -17,7 +18,6 @@ TAGS
 *.o
 *.a
 *.so
-main
 
 # various output files
 *.out
@@ -42,8 +42,13 @@ _testmain.go
 *.test
 *.prof
 *.out
+*.static
+main
+*.arm
+*.arm64
+*.386
+
 
 # local test data
 
 t-data/*local
-
