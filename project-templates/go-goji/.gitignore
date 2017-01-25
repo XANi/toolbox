@@ -8,7 +8,7 @@
 \#*\#
 DEADJOE
 # compiled files
-_vendor/
+vendor/
 *\.test
 tags
 TAGS
@@ -46,4 +46,3 @@ _testmain.go
 # local test data
 
 t-data/*local
-

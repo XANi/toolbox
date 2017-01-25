@@ -31,3 +31,12 @@ needed if you need to defragment it (for example when shrinking pv)
 
 
 `blkdiscard -v /dev/sda` - discards drive. Add `-s` for secure erase. Will err out if not supported by controller/drive
+
+
+### Shrink system LVM
+
+
+* `pvresize --setphysicalvolumesize 35G /dev/md1`
+* `mdadm -G -z36G /dev/md1`
+* repartition to 40G
+* `pvresize /dev/md1`

@@ -31,6 +31,10 @@ add `--uuid=` (from `--examine`) to start only specific one
 
 You can also set -Z to specify "array" size (size visible to application) but that wont persist between reboots
 
+## Generate mdadm.conf
+
+`mdadm --detail --scan`
+
 
 
 ## [MegaRAID](http://www.lsi.com/Search/pages/results.aspx?k=megacli&r=assettype%3D%22AQpVc2VyIEd1aWRlCWFzc2V0dHlwZQECXiICIiQ%3D%22)

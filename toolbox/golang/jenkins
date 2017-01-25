@@ -1,0 +1,42 @@
+#!/bin/bash
+# strip protocol
+GIT_PATH=$(echo $GIT_URL |perl -pi -e 's{^.*(\@|:\/\/)}{}')
+echo $GIT_PATH
+here=`pwd`
+export GOPATH="$here/go"
+# replace git path with your app's name if used separately
+GO_REPO_PATH="$GOPATH/src/$GIT_PATH"
+export PATH="$PATH:/var/lib/jenkins/go/tools:$GOPATH/bin"
+
+mkdir -p "$here/test-out/"
+rm -f "$here/test-out/*.xml"
+
+# go weirdness, package must be extracted to gopath to build correctly even if vendoring is used
+if [ ! -L "$GO_REPO_PATH" ] ; then
+	mkdir -p "$GO_REPO_PATH"
+    rm -rf "$GO_REPO_PATH"
+    ln -s "$here/src" "$GO_REPO_PATH"
+fi
+
+cd "$GO_REPO_PATH" || exit 1
+if [ -e glide.yaml ] ; then
+	glide install
+fi
+
+covermode=count
+
+echo "mode: $covermode" >cover.out
+i=0
+
+# generate test per package skipping vendored stuff
+for a in $(go list ./... |grep -v vendor) ; do
+   echo "running tests for $a"
+   rm -r cover.tmp
+   go test -v -coverprofile=cover.tmp -covermode=$covermode $a >test.tmp && tail -n +2 cover.tmp >>cover.out
+   # merge coverage files because go tools can't deal with multiple packages correctly
+   cat test.tmp |go-junit-report > "$here/test-out/test-$i.xml"
+   i=$((i+1))
+done
+
+gocov convert cover.out  >$here/cover.json
+cat $here/cover.json |gocov-xml >$here/cover-cobertura.xml
