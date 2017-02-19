@@ -7,7 +7,7 @@ Children get their parents' last equipped skill (remember that you can rearrange
 | Sully     | ++      | Kjelle  ♀ |             |
 | Nowi      | Donnel  | Nah ♀     |             |
 | Tharja    | Henry   | Noire ♀    | Pass renewal |
-| Miriliel  | Kellam  | Laurent ♂ |             |
+| Miriliel  |virion  | Laurent ♂ |             |
 | my unit   | Laurent | Morgan ♂  |             |
 | Lisa      | Ricken  | Owain ♂   |             |
 | Mirabelle | ???     | Brady ♂   |             |
