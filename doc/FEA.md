@@ -14,4 +14,11 @@ Children get their parents' last equipped skill (remember that you can rearrange
 | Panne     | Stahl   | Yarne ♂   |             |
 | Olivia    | ???     | Inigo   ♂ |             |
 | Cherche   | ???     | Gerome  ♂  |             |
+|-----------|---------|-----------|---------------
+| Oboro     | takumi? |
+| Hana      | Subaki  |
+| Saizo     | Kagero |
+| Sakura    |asama |
+| hinoka  | silias
+
 
