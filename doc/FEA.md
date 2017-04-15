@@ -20,5 +20,7 @@ Children get their parents' last equipped skill (remember that you can rearrange
 | Saizo     | Kagero |
 | Sakura    |asama |
 | hinoka  | silias
-
+| oboro   | jakob |
+| rinkah |hinata |
+|mozu|kaden
 
