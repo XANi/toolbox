@@ -2,8 +2,7 @@
 version=$(shell git describe --tags --long --always|sed 's/^v//')
 binfile=main
 
-all: glide.lock vendor
-	rm -rf _vendor
+all: vendor | glide.lock
 	go build -ldflags "-X main.version=$(version)" $(binfile).go
 	-@go fmt
 
