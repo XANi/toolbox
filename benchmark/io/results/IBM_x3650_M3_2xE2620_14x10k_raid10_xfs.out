@@ -1,0 +1,30 @@
+seq-write: (g=0): rw=write, bs=4M-4M/4M-4M/4M-4M, ioengine=libaio, iodepth=128
+seq-read: (g=1): rw=read, bs=4M-4M/4M-4M/4M-4M, ioengine=libaio, iodepth=128
+seq-rw: (g=2): rw=rw, bs=4M-4M/4M-4M/4M-4M, ioengine=libaio, iodepth=128
+rand-write: (g=3): rw=randwrite, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+rand-read: (g=4): rw=randread, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+rand-rw: (g=5): rw=randrw, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+threaded-write: (g=6): rw=randwrite, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+...
+threaded-read: (g=7): rw=randread, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+...
+threaded-rw: (g=8): rw=randrw, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+...
+threaded-rw-pareto: (g=9): rw=randrw, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+...
+threaded-80-20: (g=10): rw=randrw, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+...
+streaming-write: (g=11): rw=write, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+...
+streaming-read: (g=12): rw=read, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+...
+streaming-rw: (g=13): rw=rw, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=128
+...
+fio-2.16
+clock setaffinity failed: Invalid argument
+clock setaffinity failed: Invalid argument
+clock setaffinity failed: Invalid argument
+clock setaffinity failed: Invalid argument
+clock setaffinity failed: Invalid argument
+clock setaffinity failed: Invalid argument
+Starting 134 processes
