@@ -1,5 +1,5 @@
 # generate version number
-version=$(shell git describe --tags --long --always|sed 's/^v//')
+version=$(shell git describe --tags --long --always --dirty|sed 's/^v//')
 binfile=main
 
 all: vendor | glide.lock
