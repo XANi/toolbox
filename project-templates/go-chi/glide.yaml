@@ -1,0 +1,5 @@
+package: .
+import:
+- package: github.com/op/go-logging
+- package: github.com/go-chi/chi
+- package: gopkg.in/unrolled/render.v1

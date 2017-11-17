@@ -3,7 +3,6 @@ package web
 import (
 	"html/template"
 	"net/http"
-	"goji.io/pat"
 	"github.com/op/go-logging"
 	"gopkg.in/unrolled/render.v1"
 	"sync"
@@ -18,8 +17,7 @@ type Renderer struct {
 	render *render.Render
 	sync.RWMutex
 }
-
-func New() (r *Renderer,err error) {
+func NewRenderer(c *Config) (r *Renderer,err error) {
 	var v Renderer
 	v.templateCache = make(map[string]*template.Template)
 	v.Cache=true
@@ -28,28 +26,6 @@ func New() (r *Renderer,err error) {
 	return &v,err
 }
 
-
-func (r *Renderer) Handle( w http.ResponseWriter, req *http.Request) {
-	page := pat.Param(req, "page")
-	r.HandlePage(page,w,req)
-}
-func (r *Renderer) HandleRoot( w http.ResponseWriter, req *http.Request) {
-	page := `index.html`
-	r.HandlePage(page,w,req)
-}
-
-func (r *Renderer) HandleStatus( w http.ResponseWriter, req *http.Request) {
-	r.render.JSON(w, http.StatusOK,  map[string]bool{"ok": true})
-}
-
-func (r *Renderer) HandlePage(page string, w http.ResponseWriter, req *http.Request) {
-	t, err := r.getTpl(page)
-	if err != nil {
-		fmt.Fprintf(w, "Page %s not found, err:[%+v]",page,err)
-		return
-	}
-	t.Execute(w, r.Params)
-}
 
 func (r *Renderer)getTpl(name string) (t *template.Template, err error) {
 	r.RLock()
@@ -68,6 +44,17 @@ func (r *Renderer)getTpl(name string) (t *template.Template, err error) {
 		}
 	}
 	return t,err
+}
 
-
+func (r *Renderer) HandlePage(page string, w http.ResponseWriter, req *http.Request) {
+	t, err := r.getTpl(page)
+	if err != nil {
+		fmt.Fprintf(w, "Page %s not found, err:[%+v]",page,err)
+		return
+	}
+	t.Execute(w, r.Params)
+}
+func (r *Renderer) HandleRoot( w http.ResponseWriter, req *http.Request) {
+	page := `index.html`
+	r.HandlePage(page,w,req)
 }
