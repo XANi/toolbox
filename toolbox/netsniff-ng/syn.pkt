@@ -1,0 +1,11 @@
+#include <stddef.h>
+{
+  # --- ethernet header ---
+  eth(sa=11:22:33:44:55:66, da=aa:bb:cc:dd:ee:ff)
+  # --- ip header ---
+  ipv4(id=drnd(), ttl=64, saddr=dinc(), da=127.0.0.1)
+  # --- tcp header ---
+  tcp(sport=drnd(1024,65000), dport=80,syn)
+  # payload
+  #'A',  fill(0x41, 11),
+}

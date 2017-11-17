@@ -1,4 +1,5 @@
 config.yaml
+project-templates/go-goji/glide.lock
 # editor temp files
 *~
 .*.sw?
