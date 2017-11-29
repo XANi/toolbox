@@ -1,2 +1,0 @@
-gom 'github.com/op/go-logging'
-gom 'github.com/smartystreets/goconvey/convey'
