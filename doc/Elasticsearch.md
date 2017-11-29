@@ -44,3 +44,5 @@ Adding '?v' will add colum names + padding, like that:
 * `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.enable": "all"}}'` - re-enable reallocation
 * `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.cluster_concurrent_rebalance": "6"}}'` - change concurrent rebalance limit for whole cluster
 * `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.node_concurrent_recoveries": 15}}'` - change concurrent recoveries on node
+* `curl -XPOST localhost:9200/_cluster/reroute?retry_failed` - retry failed shard reallocations
+* `curl 'http://localhost:9200/_cat/shards?v&h=index,node,shard,prirep,state,unassigned.reason` - display reason why shard is unassigned
