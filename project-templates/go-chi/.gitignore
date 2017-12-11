@@ -1,12 +1,13 @@
 
 
-# editor temp files
+# editor files
 *~
 .*.sw?
 .sw?
 .\#*
 \#*\#
 DEADJOE
+.idea/*
 # compiled files
 _vendor/
 vendor/
