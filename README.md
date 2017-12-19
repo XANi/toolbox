@@ -22,6 +22,7 @@ Bunch of notes and cheatsheets about sysadmin stuff
 * [Java](doc/Java.md)
 * [Juniper](doc/Juniper.md)
 * [KVM](doc/KVM.md)
+* [Kubernetes](doc/Kubernetes.md)
 * [LVM](doc/LVM.md)
 * [Mysql](doc/Mysql.md)
 * [RAID](doc/RAID.md)
