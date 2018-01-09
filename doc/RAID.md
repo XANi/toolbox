@@ -108,6 +108,27 @@ remove config and start disk clear
 * `megacli -PDClear -Start -PhysDrv [252:3] -a0` - start clear on device 252:3 (change to `-Stop` to stop)
 * `megacli -PDClear -ShowProg -PhysDrv [252:2] -a0` - show progress
 
+### clear disk cache
+
+ "The current operation is not allowed because the controller has data in cache for offline or missing virtual disks"
+
+* `megacli -GetPreservedCacheList -aALL`
+
+        Adapter #0
+
+        Virtual Drive(Target ID 01): Missing.
+
+        Exit Code: 0x00
+        
+* `megacli -DiscardPreservedCache -L1 -aALL`
+                                     
+        Adapter #0
+        
+        Virtual Drive(Target ID 01): Preserved Cache Data Cleared.
+        
+        Exit Code: 0x00
+
+
 ### flashing
 
 * get firmware

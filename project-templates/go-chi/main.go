@@ -1,7 +1,8 @@
 package main
 
 import (
-	"./web" // fixme to absolute path after import
+	 // fixme to absolute path after import, NOT DOING THAT BREAKS VENDORING!!!
+	"./web"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/op/go-logging"

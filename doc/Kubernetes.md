@@ -5,6 +5,10 @@
 * [Kubernetes from scratch](https://kubernetes.io/docs/getting-started-guides/scratch/)
 * [Kubernetes the hard way](https://github.com/kelseyhightower/kubernetes-the-hard-way)
 
+## Gotchas
+
+* kube-apiserver cert should have apiserver API IP in altnames, else some things fail
+
 ## Other
 * [Dashboard without RBAC](https://github.com/kubernetes/dashboard/tree/2b4c05b083d6f06d258d4cbc8b2b1b9583b0bc6f/src/deploy)
 
