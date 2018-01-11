@@ -1,3 +1,4 @@
 package: .
 import:
 - package: github.com/op/go-logging
+- package: github.com/urfave/cli
