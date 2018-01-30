@@ -1,6 +1,8 @@
-hash: 3db27418912ea9485d821cd71b6c73bb495a37767f12d96bbdc49eb76780c850
-updated: 2016-12-21T18:43:26.067493018+01:00
+hash: d1d0a4c79d705ec9c7f80ce89ede3af409efdc6fc9b8e88c439cdacc23f8dcf6
+updated: 2018-01-11T20:48:52.268244264+01:00
 imports:
 - name: github.com/op/go-logging
   version: 970db520ece77730c7e4724c61121037378659d9
+- name: github.com/urfave/cli
+  version: 4b90d79a682b4bf685762c7452db20f2a676ecb2
 testImports: []
