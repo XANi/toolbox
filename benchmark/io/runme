@@ -14,5 +14,8 @@ else
     OUT=$1
     shift 1
     mkdir -p $DIR/results/
-    fio --output=$DIR/results/$OUT.out --append-terse $DIR/config.fio $@
+    # old fio
+    #fio --output=$DIR/results/$OUT.out --append-terse $DIR/config.fio $@
+    # new fio
+    fio --output=$DIR/results/$OUT.out --output-format=normal,terse,json $DIR/config.fio $@
 fi

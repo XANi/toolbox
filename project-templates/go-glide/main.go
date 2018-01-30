@@ -16,8 +16,7 @@ func main() {
 	logging.SetBackend(stderrFormatter)
 	logging.SetFormatter(stdout_log_format)
 
-	log.Info("Starting app")
-	log.Debugf("version: %s", version)
+	log.Infof("Starting app version: %s", version)
 	if !strings.ContainsRune(version, '-') {
 		log.Warning("once you tag your commit with name your version number will be prettier")
 	}
