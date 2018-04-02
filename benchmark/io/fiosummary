@@ -1,0 +1,267 @@
+#!/usr/bin/env perl
+# puppet managed file, for more info 'puppet-find-resources $filename'
+# BEFORE YOU MAKE ANY CHANGES, READ https://stonka.non.3dart.com/wiki/wiki/Puppet#Zarz.C4.85dzanie_konfiguracjami
+
+# template for new commandline scripts
+use strict;
+use warnings;
+use v5.10;
+use Carp qw(croak cluck carp confess);
+use Getopt::Long qw(:config auto_help);
+use Pod::Usage;
+use Data::Dumper;
+use Text::Table;
+
+my $cfg = { # default config values go here
+#    daemon  => 0,
+#    pidfile => 0,
+};
+my $help;
+
+GetOptions(
+#    'daemon'        => \$cfg->{'daemon'},
+#    'pidfile=s'       => \$cfg->{'pidfile'},
+    'help'          => \$help,
+) or pod2usage(
+    -verbose => 2,  #2 is "full man page" 1 is usage + options ,0/undef is only usage
+    -exitval => 1,   #exit with error code if there is something wrong with arguments so anything depending on exit code fails too
+);
+
+# some options are required, display short help if user misses them
+my $required_opts = [ ];
+my $missing_opts;
+foreach (@$required_opts) {
+    if (!defined( $cfg->{$_} ) ) {
+        push @$missing_opts, $_
+    }
+}
+
+if ($help || defined( $missing_opts ) ) {
+    my $msg;
+    my $verbose = 2;
+    if (!$help && defined( $missing_opts ) ) {
+        $msg = 'Opts ' . join(', ',@$missing_opts) . " are required!\n";
+        $verbose = 1; # only short help on bad arguments
+    }
+    pod2usage(
+        -message => $msg,
+        -verbose => $verbose, #exit code doesnt work with verbose > 2, it changes to 1
+    );
+}
+my $tb = Text::Table->new(
+    "Job",
+    {is_sep => 1,title   => ' | ',},
+    "Read IOPS",
+    {is_sep => 1,title   => ' | ',},
+    "Write IOPS",
+    {is_sep => 1,title   => ' | ',},
+    "Read bw",
+    {is_sep => 1,title   => ' | ',},
+    "Write bw"
+);
+$tb->body_rule( '-', '+');
+
+
+while (<>) {
+    my $line = $_;
+    if ($line =~ /^3;fio/)  {
+        my $job  = parse_fio3($line);
+        $tb->add(
+            $job->{'jobname'},
+            $job->{'read'}{'iops'},
+            $job->{'write'}{'iops'},
+            $job->{'read'}{'bw'},
+            $job->{'write'}{'bw'},
+        );
+    }
+}
+    print $tb->rule('=');
+    print $tb->title;
+    print $tb->rule('-');
+    print $tb->body;;
+    print $tb->rule('=');
+
+
+sub parse_fio3 {
+    my $line = shift;
+    my $j = {};
+    (
+        undef,
+        undef,
+        $j->{'jobname'},
+        $j->{'groupid'},
+        $j->{'error'},
+        $j->{'read'}{'io_bytes'},
+        $j->{'read'}{'bw'},
+        $j->{'read'}{'iops'},
+        $j->{'read'}{'runtime'},
+        $j->{'read'}{'slat'}{'min'},
+        $j->{'read'}{'slat'}{'max'},
+        $j->{'read'}{'slat'}{'mean'},
+        $j->{'read'}{'slat'}{'stddev'},
+        $j->{'read'}{'clat'}{'min'},
+        $j->{'read'}{'clat'}{'max'},
+        $j->{'read'}{'clat'}{'mean'},
+        $j->{'read'}{'clat'}{'stddev'},
+        $j->{'read'}{'clat'}{'percentile'}{'1.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'5.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'10.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'20.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'30.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'40.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'50.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'60.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'70.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'80.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'90.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'95.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'99.000000'},
+        $j->{'read'}{'clat'}{'percentile'}{'99.500000'},
+        $j->{'read'}{'clat'}{'percentile'}{'99.900000'},
+        $j->{'read'}{'clat'}{'percentile'}{'99.950000'},
+        $j->{'read'}{'clat'}{'percentile'}{'99.990000'},
+        $j->{'read'}{'clat'}{'percentile'}{'0.00'},
+        $j->{'read'}{'clat'}{'percentile'}{'0.00'},
+        $j->{'read'}{'clat'}{'percentile'}{'0.00'},
+        $j->{'read'}{'lat'}{'min'},
+        $j->{'read'}{'lat'}{'max'},
+        $j->{'read'}{'lat'}{'mean'},
+        $j->{'read'}{'lat'}{'stddev'},
+        $j->{'read'}{'bw_min'},
+        $j->{'read'}{'bw_max'},
+        $j->{'read'}{'bw_agg'},
+        $j->{'read'}{'bw_mean'},
+        $j->{'read'}{'bw_dev'},
+        $j->{'write'}{'io_bytes'},
+        $j->{'write'}{'bw'},
+        $j->{'write'}{'iops'},
+        $j->{'write'}{'runtime'},
+        $j->{'write'}{'slat'}{'min'},
+        $j->{'write'}{'slat'}{'max'},
+        $j->{'write'}{'slat'}{'mean'},
+        $j->{'write'}{'slat'}{'stddev'},
+        $j->{'write'}{'clat'}{'min'},
+        $j->{'write'}{'clat'}{'max'},
+        $j->{'write'}{'clat'}{'mean'},
+        $j->{'write'}{'clat'}{'stddev'},
+        $j->{'write'}{'clat'}{'percentile'}{'1.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'5.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'10.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'20.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'30.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'40.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'50.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'60.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'70.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'80.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'90.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'95.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'99.000000'},
+        $j->{'write'}{'clat'}{'percentile'}{'99.500000'},
+        $j->{'write'}{'clat'}{'percentile'}{'99.900000'},
+        $j->{'write'}{'clat'}{'percentile'}{'99.950000'},
+        $j->{'write'}{'clat'}{'percentile'}{'99.990000'},
+        $j->{'write'}{'clat'}{'percentile'}{'0.00'},
+        $j->{'write'}{'clat'}{'percentile'}{'0.00'},
+        $j->{'write'}{'clat'}{'percentile'}{'0.00'},
+        $j->{'write'}{'lat'}{'min'},
+        $j->{'write'}{'lat'}{'max'},
+        $j->{'write'}{'lat'}{'mean'},
+        $j->{'write'}{'lat'}{'stddev'},
+        $j->{'write'}{'bw_min'},
+        $j->{'write'}{'bw_max'},
+        $j->{'write'}{'bw_agg'},
+        $j->{'write'}{'bw_mean'},
+        $j->{'write'}{'bw_dev'},
+        $j->{'usr_cpu'},
+        $j->{'sys_cpu'},
+        $j->{'ctx'},
+        $j->{'majf'},
+        $j->{'minf'},
+        $j->{'iodepth_level'}{'1'},
+        $j->{'iodepth_level'}{'2'},
+        $j->{'iodepth_level'}{'4'},
+        $j->{'iodepth_level'}{'8'},
+        $j->{'iodepth_level'}{'16'},
+        $j->{'iodepth_level'}{'32'},
+        $j->{'iodepth_level'}{'>=64'},
+        $j->{'latency_us'}{'2'},
+        $j->{'latency_us'}{'4'},
+        $j->{'latency_us'}{'10'},
+        $j->{'latency_us'}{'20'},
+        $j->{'latency_us'}{'50'},
+        $j->{'latency_us'}{'100'},
+        $j->{'latency_us'}{'250'},
+        $j->{'latency_us'}{'500'},
+        $j->{'latency_us'}{'750'},
+        $j->{'latency_us'}{'1000'},
+        $j->{'latency_ms'}{'2'},
+        $j->{'latency_ms'}{'4'},
+        $j->{'latency_ms'}{'10'},
+        $j->{'latency_ms'}{'20'},
+        $j->{'latency_ms'}{'50'},
+        $j->{'latency_ms'}{'100'},
+        $j->{'latency_ms'}{'250'},
+        $j->{'latency_ms'}{'500'},
+        $j->{'latency_ms'}{'750'},
+        $j->{'latency_ms'}{'1000'},
+        $j->{'latency_ms'}{'2000'},
+        $j->{'latency_ms'}{'>=2000'},
+    ) = split(/;/,$line);
+    return $j;
+}
+
+
+
+
+
+
+
+
+
+
+__END__
+
+=head1 NAME
+
+foobar - get foo from bar
+
+=head1 SYNOPSIS
+
+foobar --option1 val1
+
+=head1 DESCRIPTION
+
+Does foo to bar
+
+=head1 OPTIONS
+
+parameters can be shortened if unique, like  --add -> -a
+
+=over 4
+
+=item B<--option1> val2
+
+sets option1 to val2. Default is val1
+
+=item B<--help>
+
+display full help
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item B<foobar>
+
+Does foo to bar with defaults
+
+=item B<foobar --bar bar2>
+
+Does foo to specified bar
+
+=back
+
+=cut
