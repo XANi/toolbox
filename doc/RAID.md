@@ -31,6 +31,15 @@ add `--uuid=` (from `--examine`) to start only specific one
 
 You can also set -Z to specify "array" size (size visible to application) but that wont persist between reboots
 
+## make RAID10 out of RAID online
+
+* shrink PV - `pvresize --setphysicalvolumesize 20G /dev/md1`
+* change device and array size - `mdadm /dev/md1 -G  -z 25G -Z 25`
+* change to RAID0 (unsafe) - `mdadm /dev/md1 -G  -l 0`
+* change to RAID10 and re-add disk - `mdadm /dev/md1 -G  -l 10 --add /dev/sda2`
+* add remaining disk(s) - `mdadm /dev/md1 --add /dev/sdc2`
+* grow array back - ` mdadm -G /dev/md1 --raid-devices=4`
+
 ## Generate mdadm.conf
 
 `mdadm --detail --scan`
