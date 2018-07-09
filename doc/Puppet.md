@@ -2,6 +2,15 @@
 
 `$padded_prio = sprintf('%04d',$prio) # 4 -> 0004`
 
+### path to file in repo in template
+
+    # <%=  __FILE__.gsub(/.*?modules\//,'puppet://modules/') %>
+
+will result in "puppet-like" `# puppet://modules/network/templates/ifcfg.erb`, while
+
+    # <%=  __FILE__.gsub(/.*?modules\//,@fqdn + ':') %>
+   
+will result in `# server.example.com:bird/templates/part.conf`
 
 ### Install package from certain distro
 

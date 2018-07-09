@@ -106,7 +106,7 @@ Naming:
 ### Remove drive
 
 * `megacli -PDOffline -PhysDrv '[252:1]' -a0` - this will make controller make loud noises
-* `megacli -PDMarkMissing -PhysDrv '[252:1]' -a0 - this will make controller stop making loud noises
+* `megacli -PDMarkMissing -PhysDrv '[252:1]' -a0` - this will make controller stop making loud noises
 * `megacli -PdPrpRmv -PhysDrv '[252:1]' -a0` this will stop drive
 
 ### clear drive
@@ -128,13 +128,13 @@ remove config and start disk clear
         Virtual Drive(Target ID 01): Missing.
 
         Exit Code: 0x00
-        
+
 * `megacli -DiscardPreservedCache -L1 -aALL`
-                                     
+
         Adapter #0
-        
+
         Virtual Drive(Target ID 01): Preserved Cache Data Cleared.
-        
+
         Exit Code: 0x00
 
 
