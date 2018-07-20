@@ -7,3 +7,6 @@
 
   `git filter-branch --tree-filter "find . -name '*.go' -exec sed -i -e \
     's/222222222/111111111/g' {} \;"`
+
+### get commit diff by date
+  `git diff 'HEAD..HEAD@{4 days ago}'`
