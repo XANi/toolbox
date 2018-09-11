@@ -1,7 +1,7 @@
 package main
 
 import (
-	 // fixme to absolute path after import, NOT DOING THAT BREAKS VENDORING!!!
+	// fixme to absolute path after import, NOT DOING THAT BREAKS VENDORING!!!
 	"./web"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -28,16 +28,24 @@ func main() {
 		log.Warning("once you tag your commit with name your version number will be prettier")
 	}
 	log.Error("now add some code!")
-	w, _ := web.New(&web.Config{})
-	_ = w
+	w, err := web.New(&web.Config{})
+	if err != nil {
+		log.Panicf("Could not initialize web backend %s", err)
+	}
+	r := getRouter(w)
+
+	log.Noticef("Listening on %s", listenAddr)
+	log.Errorf("Error when listening: %s", http.ListenAndServe(listenAddr, r))
+}
+
+func getRouter(web *web.Web) *chi.Mux {
 	r := chi.NewRouter()
+	_ = web
+
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	// Set a timeout value on the request context (ctx), that will signal
-	// through ctx.Done() that the request has timed out and further
-	// processing should be stopped.
 	r.Use(middleware.Timeout(60 * time.Second))
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
@@ -46,7 +54,5 @@ func main() {
 		userID := chi.URLParam(r, "param")
 		w.Write([]byte(userID))
 	})
-
-	log.Noticef("Listening on %s", listenAddr)
-	log.Errorf("Error when listening: %s", http.ListenAndServe(listenAddr, r))
+	return r
 }
