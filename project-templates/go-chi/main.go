@@ -42,6 +42,7 @@ func getRouter(web *web.Web) *chi.Mux {
 	r := chi.NewRouter()
 	_ = web
 
+	middleware.DefaultLogger = middleware.RequestLogger(&middleware.DefaultLogFormatter{Logger: &ChiLog{}})
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
@@ -55,4 +56,11 @@ func getRouter(web *web.Web) *chi.Mux {
 		w.Write([]byte(userID))
 	})
 	return r
+}
+
+type ChiLog struct {
+}
+
+func (c *ChiLog) Print(v ...interface{}) {
+	log.Info(v)
 }
