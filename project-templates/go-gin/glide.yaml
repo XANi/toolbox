@@ -1,0 +1,6 @@
+package: .
+import:
+- package: github.com/op/go-logging
+- package: github.com/urfave/cli
+- package: github.com/gin-gonic/gin
+- package: go.uber.org/zap

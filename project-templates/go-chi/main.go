@@ -23,8 +23,7 @@ func main() {
 	stderrFormatter := logging.NewBackendFormatter(stderrBackend, stdout_log_format)
 	logging.SetBackend(stderrFormatter)
 	logging.SetFormatter(stdout_log_format)
-	reqLog.SetBackend(stderrFormatter)
-
+	//reqLog.SetBackend(stderrFormatter)
 
 	log.Noticef("Starting app, version %s", version)
 	if !strings.ContainsRune(version, '-') {
