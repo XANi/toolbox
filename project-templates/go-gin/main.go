@@ -2,27 +2,21 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/op/go-logging"
 	"github.com/urfave/cli"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
-	"time"
 )
 
 var version string
 var log *zap.SugaredLogger
-var log2 = logging.MustGetLogger("main")
 var debug = true
 
 func init() {
 	consoleEncoderConfig := zap.NewDevelopmentEncoderConfig()
 	consoleEncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	consoleEncoder := zapcore.NewConsoleEncoder(consoleEncoderConfig)
-	// split off logs to stdout(normal) and stderr (errors)
-	consoleStdout := zapcore.Lock(os.Stdout)
 	consoleStderr := zapcore.Lock(os.Stderr)
-	_ = consoleStdout
 	_ = consoleStderr
 	highPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		return lvl >= zapcore.ErrorLevel
@@ -31,15 +25,15 @@ func init() {
 		return lvl < zapcore.ErrorLevel
 	})
 	core := zapcore.NewTee(
-		zapcore.NewCore(consoleEncoder, os.Stdout, lowPriority),
+		zapcore.NewCore(consoleEncoder, os.Stderr, lowPriority),
 		zapcore.NewCore(consoleEncoder, os.Stderr, highPriority),
 	)
 	logger := zap.New(core)
 	if debug {
 		logger = logger.WithOptions(
-		//			zap.Development(),
-		//			zap.AddCaller(),
-		//			zap.AddStacktrace(highPriority),
+			zap.Development(),
+			zap.AddCaller(),
+			zap.AddStacktrace(highPriority),
 		)
 	} else {
 		logger = logger.WithOptions(
@@ -47,13 +41,7 @@ func init() {
 		)
 	}
 	log = logger.Sugar()
-	log22, _ := zap.NewProduction()
-	log = log22.Sugar()
-	//log = zap.NewExample().Sugar()
-	//	cfg := zap.NewProductionConfig()
-	//cfg.OutputPaths = []string{tmpfile.Name()}
-	//	lozzer, _ := cfg.Build()
-	//	log = lozzer.Sugar()
+
 }
 
 func main() {
@@ -111,10 +99,9 @@ func main() {
 
 func runWeb(c *cli.Context) {
 	r := gin.New()
+	gin.SetMode(gin.ReleaseMode)
 
-	r.Use(gin.Logger())
-	r.Use(webLogger)
-
+	r.Use(gin.LoggerWithWriter(os.Stdout))
 	r.Use(gin.Recovery())
 
 	r.GET("/ping", func(c *gin.Context) {
@@ -122,34 +109,5 @@ func runWeb(c *cli.Context) {
 			"message": "pong",
 		})
 	})
-
 	r.Run(":3004") // listen and serve on 0.0.0.0:8080
-}
-
-func webLogger(c *gin.Context) {
-
-	path := c.Request.URL.Path
-	raw := c.Request.URL.RawQuery
-	start := time.Now()
-	c.Next()
-	end := time.Now()
-	latency := end.Sub(start)
-
-	if raw != "" {
-		path = path + "?" + raw
-	}
-	logstart := time.Now()
-	log.Infow(path,
-		"status", c.Writer.Status(), // adds 1us
-		"duration", latency, //adds 14-40us
-		"method", c.Request.Method, // adds <300ns
-		"ip", c.ClientIP(), //adds 1us
-		"errors", c.Errors.ByType(gin.ErrorTypePrivate).String(), // adds <1us
-	)
-	logend := time.Now()
-
-	loglatency := logend.Sub(logstart)
-	log2.Warningf("request: %s", latency)
-	log2.Warningf("logger: %s", loglatency)
-
 }
