@@ -6,3 +6,4 @@ project-templates/go-goji/glide.lock
 .sw?
 \#*\#
 DEADJOE
+.idea
