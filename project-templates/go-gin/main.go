@@ -1,17 +1,17 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/urfave/cli"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"os"
 )
 
 var version string
 var log *zap.SugaredLogger
 var debug = true
-
 func init() {
 	consoleEncoderConfig := zap.NewDevelopmentEncoderConfig()
 	consoleEncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
@@ -46,19 +46,19 @@ func init() {
 
 func main() {
 	defer log.Sync()
-	log.Errorf("Starting app version: %s", version)
 	app := cli.NewApp()
 	app.Name = "foobar"
 	app.Description = "do foo to bar"
 	app.Version = version
 	app.HideHelp = true
+	log.Errorf("Starting %s version: %s", app.Name, version)
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{Name: "help, h", Usage: "show help"},
 		cli.StringFlag{
-			Name:   "url",
-			Value:  "http://127.0.0.1",
-			Usage:  "It's an url",
-			EnvVar: "_URL",
+			Name:   "listen-addr",
+			Value:  "127.0.0.1:3001",
+			Usage:  "Listen addr",
+			EnvVar: "LISTEN_ADDR",
 		},
 	}
 	app.Action = func(c *cli.Context) error {
@@ -66,8 +66,6 @@ func main() {
 			cli.ShowAppHelp(c)
 			os.Exit(1)
 		}
-		log.Infof("Starting app version: %s", version)
-		log.Infof("var example %s", c.GlobalString("url"))
 		runWeb(c)
 		return nil
 	}
@@ -98,6 +96,8 @@ func main() {
 }
 
 func runWeb(c *cli.Context) {
+	listenAddr := c.String("listen-addr")
+
 	r := gin.New()
 	gin.SetMode(gin.ReleaseMode)
 
@@ -109,5 +109,7 @@ func runWeb(c *cli.Context) {
 			"message": "pong",
 		})
 	})
-	r.Run(":3004") // listen and serve on 0.0.0.0:8080
+
+	log.Infof("Starting listener on %s", listenAddr)
+	r.Run(listenAddr) // listen and serve on 0.0.0.0:8080
 }

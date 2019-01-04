@@ -35,7 +35,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		log.Infof("Starting app version: %s", version)
+		log.Infof("Starting %s version: %s", app.Name, version)
 		log.Infof("var example %s", c.GlobalString("url"))
 		return nil
 	}
