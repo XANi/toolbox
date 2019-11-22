@@ -10,3 +10,13 @@
 
 ### get commit diff by date
   `git diff 'HEAD..HEAD@{4 days ago}'`
+
+### Debug .gitignore rules
+
+  `git check-ignore -v path/to/some/file`
+
+### remove a file from history
+
+  git filter-branch --force --index-filter \
+    "git rm --cached --ignore-unmatch PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA" \
+    --prune-empty --tag-name-filter cat -- --all

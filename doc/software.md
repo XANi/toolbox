@@ -15,3 +15,4 @@
 
 * `testdisk` - recover partitions and files
 * `gpart` - guess partition table
+* [veles](https://codisec.com/veles/) - binary analysis

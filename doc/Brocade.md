@@ -55,6 +55,12 @@ If you want to write to secondary, boot it with `boot system flash secondary`. C
         interface ethernet 1/1/28
         mon ethe 1/1/26 both
 
+### Power monitring
+
+* `show inline power detail` - totals
+* `show inline power` - all interfaces
+* `show inline power 1/1/1` - particular interface
+
 ### BGP
 
  * `clear ip bgp neighbor all`

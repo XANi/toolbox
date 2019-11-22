@@ -12,3 +12,4 @@
 
 * `dch` - changelog edit
 * install `dh-systemd`, needed for some packages
+* `apt-get --allow-releaseinfo-change update` - for when release changes from testing to stable and such
