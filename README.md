@@ -12,6 +12,7 @@ Bunch of notes and cheatsheets about sysadmin stuff
 * [Brocade](doc/Brocade.md)
 * [Ceph](doc/Ceph.md)
 * [Chrome](doc/Chrome.md)
+* [Debug](doc/Debug.md)
 * [Elasticsearch](doc/Elasticsearch.md)
 * [Exim](doc/Exim.md)
 * [Galera](doc/Galera.md)

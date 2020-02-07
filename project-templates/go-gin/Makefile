@@ -2,7 +2,8 @@
 version=$(shell git describe --tags --long --always --dirty|sed 's/^v//')
 binfile=main
 
-all: 	go build -ldflags "-X main.version=$(version)" $(binfile).go
+all:
+	go build -ldflags "-X main.version=$(version)" $(binfile).go
 	-@go fmt
 
 static:
