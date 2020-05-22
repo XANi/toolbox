@@ -1,0 +1,123 @@
+/*
+*	Waveshare 2.8 A / 3.2 B tft and touch overlay for Orange Pi PC2, maybe other H5 devices.
+* 	For Orange Pi Zero and Zero Plus change the Compatible line and change PA21 to PA10 
+*/
+
+/dts-v1/; 
+/plugin/;
+
+/ {
+    compatible = "allwinner,sun8i-h3";
+
+	fragment@0 {
+		target = <&pio>;
+		__overlay__ {
+			spi0_cs1: spi0_cs1 {
+				allwinner,pins = "PA21" ;
+				allwinner,function = "gpio_out" ;
+				output-high;
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&spi0>;
+		__overlay__ {
+			pinctrl-names = "default", "default";
+			pinctrl-1 = <&spi0_cs1>;
+			cs-gpios = <0>, <&pio 0 21 0>; /* PA21 is where the touch panel CS connects to an orange pi pc2 on the waveshare module */
+		};
+	};
+
+	fragment@2 {
+		target = <&spi0>;
+		__overlay__ {
+			status = "okay";
+
+			spidev@0{
+				status = "disabled";
+			};
+
+			spidev@1{
+				status = "disabled";
+			};
+		};
+	};
+
+
+	fragment@3 {
+		target = <&pio>;
+		__overlay__ {
+			waveshare32b_pins: waveshare32b_pins {
+				allwinner,pins = "PA0", "PA3" ;
+				allwinner,function = "gpio_in" ;
+			};
+			waveshare32b_ts_pins: waveshare32b_ts_pins {
+				allwinner,pins = "PA1" ;
+				allwinner,function = "irq" ;
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <&spi0>;
+		__overlay__ {
+			/* needed to avoid dtc warning */
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			waveshare32b: waveshare32b@0 {
+				compatible = "ilitek,ili9340";
+				reg = <0>;
+				pinctrl-names = "default";
+				pinctrl-0 = <&waveshare32b_pins>;
+
+				spi-max-frequency = <16000000>;
+				txbuflen = <32768>;
+				rotate = <270>;
+				fps = <25>;
+				bgr = <0>;
+				buswidth = <8>;
+				reset-gpios = <&pio 0 0 1>;
+				dc-gpios = <&pio 0 3 0>;
+				debug = <1>;
+			};
+
+			waveshare32b_ts: waveshare32b-ts@1 {
+				compatible = "ti,ads7846";
+				reg = <1>;
+				pinctrl-names = "default";
+				pinctrl-0 = <&waveshare32b_ts_pins>;
+				spi-max-frequency = <2000000>;
+				interrupts = <0 1 2>; 
+				interrupt-parent = <&pio>;
+				pendown-gpio = <&pio 0 1 0>;
+				ti,x-min = /bits/ 16 <0>;
+				ti,y-min = /bits/ 16 <0>;
+				ti,x-max = /bits/ 16 <0x0FFF>;
+				ti,y-max = /bits/ 16 <0x0FFF>;
+				ti,pressure-min = /bits/ 16 <0>;
+				ti,pressure-max = /bits/ 16 <0xFFFF>; 
+				ti,x-plate-ohms = /bits/ 16 <400>; 
+				};
+		};
+	};
+
+	__overrides__ {
+		speed =   	<&waveshare32b>,"spi-max-frequency:0";
+		txbuflen =	<&waveshare32b>,"txbuflen:0";
+		rotate =  	<&waveshare32b>,"rotate:0";
+		fps =     	<&waveshare32b>,"fps:0";
+		bgr =		<&waveshare32b>,"bgr:0";
+		debug =   	<&waveshare32b>,"debug:0";
+
+		swapxy =  	<&waveshare32b_ts>,"ti,swap-xy?";
+		xmin = 		<&waveshare32b_ts>,"ti,x-min;0";
+		ymin = 		<&waveshare32b_ts>,"ti,y-min;0";
+		xmax = 		<&waveshare32b_ts>,"ti,x-max;0";
+		ymax = 		<&waveshare32b_ts>,"ti,y-max;0";
+		pmin = 		<&waveshare32b_ts>,"ti,pressure-min;0";
+		pmax = 		<&waveshare32b_ts>,"ti,pressure-max;0";
+		xohms = 	<&waveshare32b_ts>,"ti,x-plate-ohms;0";
+	}; 
+};
