@@ -42,6 +42,11 @@ Note that create options cant modify existing permissions, you have to use `auth
     ceph auth del osd.{osd-num}
     ceph osd rm {osd-num}
 
+#### Cleaning up all OSD remains
+
+    umount /var/lib/ceph/osd/*
+    for a in `lvs | grep osd-block |grep ceph |awk '{print $2}'` ; do vgremove $a ; done
+
 #### osd recovery
 
 * `ceph osd set noin` - do not add new ones automatically
