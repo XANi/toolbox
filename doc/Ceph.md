@@ -3,6 +3,13 @@
 * `ceph -w` - show running cluster ops (recovery etc)
 
 
+
+
+### Version management
+
+* `ceph versions` - show versions of daemons in cluster
+* `ceph features` - show enabled feature level (i.e do not allow lower level to connect)
+
 ### Key management
 
 Note that create options cant modify existing permissions, you have to use `auth caps` for it
@@ -17,8 +24,24 @@ Note that create options cant modify existing permissions, you have to use `auth
 ### Pool management
 
 * `ceph osd pool create volumes 512` - create pool `volumes` with `512` placement groups
-* `ceph osd pool set {pool-name} pg_num {pg_num}` - change placement group count (disruptive). Remember to also change pgp_num after that
+* `ceph osd pool set {pool-name} pg_num {pg_num}` - change placement group count (disruptive). Remember to also change pgp_num after that, obsolete, see autoscaler
 * `ceph osd pool set {pool-name} pgp_num {pgp_num}` - change placement group for placement count (disruptive). Remember to change pg_num before that
+* `ceph pg ls-by-pool {pool-name}`
+
+
+#### PG autoscalling
+
+* `ceph osd pool autoscale-status` will give you state of it. The important part here is "BIAS", that's preferred method of controlling number of PGs per pool
+* `ceph osd pool set default.rgw.buckets.index pg_autoscale_bias 16`  - multiply ratio by that number. Which means for big ratios (like `.index` vs `.data`) you might need to use big number to affect placement
+* `ceph osd pool set default.rgw.buckets.index pg_num_min 64` - to set minimum - currently you need to resize to that minimum *first* (see manual method) then apply it
+
+##### Manual
+* `ceph osd pool set foo pg_autoscale_mode off`
+* `ceph osd pool set foo pg_num 64` - create
+* `ceph osd pool set foo pgp_num 64` - balance (pgp means "placement groups for placement")
+
+
+
 
 
 ### Volume management
@@ -61,6 +84,7 @@ Note that create options cant modify existing permissions, you have to use `auth
 * `radosgw-admin user rm --uid=username`
 * `radosgw-admin bucket list`
 * `radosgw-admin metadata get user:testuser`
+* `radosgw-admin bi list --bucket=bucketname` - list bucket index
 
 #### Create pools
 `for a in .rgw.root .rgw.control .rgw.gc .rgw.buckets .rgw.buckets.index .rgw.buckets.extra .log .intent-log .usage .users .users.email .users.swift .users.uid ; do ceph osd pool create $a 16 16 ; done`
