@@ -7,3 +7,11 @@ Those should in *theory* make your server boot into bios on next reboot... in pr
 * `ipmitool chassis bootparam set bootflag force_pxe`- force pxe
 
 * `ipmitool mc watchdog get` - get watchdog status
+
+
+## Add user
+
+* `ipmitool user set name 3 fence`
+* `ipmitool user set password 3`
+* `ipmitool channel setaccess 1 3 link=on ipmi=on callin=on privilege=4`
+* `ipmitool user enable 3`
