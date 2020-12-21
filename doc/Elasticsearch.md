@@ -40,12 +40,12 @@ Adding '?v' will add colum names + padding, like that:
 ### useful commands
 
 * `curl -XPOST 'http://localhost:9200/_cluster/nodes/_local/_shutdown?delay=60s'` - notify cluster you are shutting down then exit after 60 seconds. instead of local you can specify nodes separated by `,` , attributes like `rack:2` or keywords like `_master` or `_all`. `*` can be used too on any of those for example `ra*:2*`
-* `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.enable": "none"}}'` - disable reallocating shards. Useful if you want to restart one of nodes without too much reshuffling
-* `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.enable": "all"}}'` - re-enable reallocation
-* `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.cluster_concurrent_rebalance": "6"}}'` - change concurrent rebalance limit for whole cluster
-* `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.node_concurrent_recoveries": 15}}'` - change concurrent recoveries on node
+* `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.enable": "none"}}'` - disable reallocating shards. Useful if you want to restart one of nodes without too much reshuffling
+* `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.enable": "all"}}'` - re-enable reallocation
+* `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.cluster_concurrent_rebalance": "6"}}'` - change concurrent rebalance limit for whole cluster
+* `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.node_concurrent_recoveries": 15}}'` - change concurrent recoveries on node
 * `curl -XPOST localhost:9200/_cluster/reroute?retry_failed` - retry failed shard reallocations
 * `curl 'http://localhost:9200/_cat/shards?v&h=index,node,shard,prirep,state,unassigned.reason` - display reason why shard is unassigned
-* `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.exclude._name":"node1,node2"}}'` - exclude node1 and node2 from allocation, basically a soft node decommision. also works with `_ip` and `_host` and with globs.
-* `curl -XPUT localhost:9200/_cluster/settings -d '{"transient":{"cluster.routing.allocation.exclude._name":null}}'` - remove exclude rule for node name
+* `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.exclude._name":"node1,node2"}}'` - exclude node1 and node2 from allocation, basically a soft node decommision. also works with `_ip` and `_host` and with globs.
+* `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.exclude._name":null}}'` - remove exclude rule for node name
 * `curl -XPOST "http://localhost:9200/syslog-2018.08.06/_forcemerge?max_num_segments=1"` - force full merge (removes deleted records) on index
