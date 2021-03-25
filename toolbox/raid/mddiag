@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+# template for new commandline scripts
 use strict;
 use warnings;
 use Carp qw(croak cluck carp confess);
@@ -98,7 +99,11 @@ sub summary {
             print "\n";
         }
         my $slot_to_comp = {};
+        my $spare_ctr = 0;
         while(my ($comp_name, $comp) = each  %{ $md->{'components'} } ) {
+            if ($comp->{'slot'} eq 'none') {
+                $comp-> {'slot'} = 's'. $spare_ctr++;
+            }
             $slot_to_comp->{ $comp->{'slot'} } = $comp_name;
         }
         foreach my $id (sort keys %$slot_to_comp) {
@@ -114,11 +119,17 @@ sub summary {
             elsif ($comp->{'state'} !~ /(spare|in_sync)/ || $comp->{'errors'}) {
                 print color('bold yellow')
             }
-            elsif ($id !~ /\d+/) {
+            elsif ($comp->{'state'} eq 'spare') {
                 print color('bold cyan');
             }
-            else {
+            elsif ($comp->{'state'} =~ /replacement/) {
+                print color('bold yellow');
+            }
+            elsif ($comp->{'state'} eq 'in_sync') {
                 print color('bold green');
+            }
+            else {
+                print color('red');
             }
             print "$id\t$slot_to_comp->{$id}\t";
             print format_bytes($comp->{'size'} * 1024) . " \t";
@@ -218,6 +229,7 @@ sub load_component_info {
         slot => 'slot',
         state => 'state',
     };
+    my $spare_slot=1;
     while(glob("$path/dev-*")) {
         my $path = $_;
         my ($dev) = m{md/dev-([a-z\d]+)};

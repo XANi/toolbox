@@ -16,3 +16,7 @@
 * `testdisk` - recover partitions and files
 * `gpart` - guess partition table
 * [veles](https://codisec.com/veles/) - binary analysis
+
+# HTTP testing
+
+* 'slowhttptest' - test slowloris-like DoS

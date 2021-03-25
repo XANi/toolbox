@@ -48,5 +48,7 @@ Adding '?v' will add colum names + padding, like that:
 * `curl 'http://localhost:9200/_cat/shards?v&h=index,node,shard,prirep,state,unassigned.reason` - display reason why shard is unassigned
 * `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.exclude._name":"node1,node2"}}'` - exclude node1 and node2 from allocation, basically a soft node decommision. also works with `_ip` and `_host` and with globs.
 * `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.exclude._name":null}}'` - remove exclude rule for node name
+* `curl -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.*":null}}'` - wildcards work for resetting too
 * `curl -XPOST "http://localhost:9200/syslog-2018.08.06/_forcemerge?max_num_segments=1"` - force full merge (removes deleted records) on index
 * `curl -XPOST localhost:9200/_cluster/reroute -H 'Content-Type: application/json' -d '{"commands":[{"move":{"index":"index-name","shard":6,"from_node":"node1","to_node":"node2"}}]}'` - force shard relocation
+* `curl -XPUT "localhost:9200/indexname/_settings?pretty" -H 'Content-Type: application/json' -d'{"index" : {"number_of_replicas" : 1}}'
