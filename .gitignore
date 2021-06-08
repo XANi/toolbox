@@ -7,3 +7,5 @@ project-templates/go-goji/glide.lock
 \#*\#
 DEADJOE
 .idea
+# templates dont need/want it
+go.sum

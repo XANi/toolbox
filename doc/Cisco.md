@@ -15,3 +15,8 @@ To avoid that idiocy add
 ## tunnel detail
 
 * `show crypto session detail` show ssl sessions
+
+
+## route capacity info
+
+* `show platform hardware ip route summary`

@@ -47,7 +47,8 @@ Note that create options cant modify existing permissions, you have to use `auth
 ### Volume management
 
 * `rbd create mypool/myimage --size 102400` - create 100GB image. THIS IS IN MEGABYTES and it doesnt support usual k/M/G/T suffixes
-!
+* `rbd info bd info volumes/volume` - get info about image. `volumes/` is name of the pool, not required if using default
+* `rados listwatchers -p volumes rbd_header.27b99c4dd4a60` - get info what is using the image. the ID comes from `rbd_info` block_name_prefix field, just replace `rbd_data` with `rbd_header`
 
 
 ### OSD
@@ -90,6 +91,13 @@ Note that create options cant modify existing permissions, you have to use `auth
 `for a in .rgw.root .rgw.control .rgw.gc .rgw.buckets .rgw.buckets.index .rgw.buckets.extra .log .intent-log .usage .users .users.email .users.swift .users.uid ; do ceph osd pool create $a 16 16 ; done`
 
 will create small (16 PG) pools for RADOS; you can tune up but not down (AFAIK, might be fixed) so it is better to start small
+
+### RBD
+
+#### Common ops
+
+* `rbd resize --image pool-name/volume-name --size 115G` - resize in KVM via `virsh blockresize vmname device --size 115G`, device can be just `vdX`
+* `rbd --pool volumes ls`
 
 ### Gotchas
 
