@@ -21,6 +21,10 @@ var webContent embed.FS
 
 func init() {
 	consoleEncoderConfig := zap.NewDevelopmentEncoderConfig()
+	// naive systemd detection. Drop timestamp if running under it
+	if os.Getenv("INVOCATION_ID") != "" || os.Getenv("JOURNAL_STREAM") != "" {
+		consoleEncoderConfig.TimeKey = ""
+	}
 	consoleEncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	consoleEncoder := zapcore.NewConsoleEncoder(consoleEncoderConfig)
 	consoleStderr := zapcore.Lock(os.Stderr)

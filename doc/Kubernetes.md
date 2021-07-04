@@ -21,3 +21,15 @@
 * `kubectl --namespace=kube-system describe deployment kubernetes-dashboard`
 * `kubectl --namespace=kube-system logs kube-dns-648298301-3shwp kubedns`
 * `kubectl --namespace=kube-system delete services/kube-dns deployment/kube-dns`
+
+
+## getting admin token
+
+* `kubectl get serviceaccounts --namespace=kube-system admin-user -o yaml`
+* `kubectl describe secret admin-user-token-g2p89 --namespace kube-system`
+* `kubectl get secret --namespace=kube-system admin-user-token-g2p89 -o yaml`
+
+
+## Namespace
+
+* `kubectl config set-context --current --namespace=qubebot` - change namespace in the current context

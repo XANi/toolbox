@@ -92,6 +92,7 @@ Note that create options cant modify existing permissions, you have to use `auth
 
 will create small (16 PG) pools for RADOS; you can tune up but not down (AFAIK, might be fixed) so it is better to start small
 
+
 ### RBD
 
 #### Common ops
@@ -102,3 +103,11 @@ will create small (16 PG) pools for RADOS; you can tune up but not down (AFAIK, 
 ### Gotchas
 
 * `ceph osd crush tunables optimal` - run on new cluster to use optimal profile instead of legacy; will cause rebalance
+
+### Debug
+
+#### Crash handling
+
+* `ceph crash ls` - to see list
+* `ceph crash info <id>` - to see details
+* `ceph crash archive-all` - cleanup
