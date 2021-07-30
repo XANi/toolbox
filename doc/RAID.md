@@ -68,6 +68,7 @@ Naming:
 * `megacli -PDList -aALL` - list all physical devices and their state on all controllers
 * `megacli -PDInfo -PhysDrv '[3:1]' -aALL` - info about single physical drive
 * `megacli -LDInfo  -Lall -a0` - info about all LD on same controller
+* `megacli -LdPdInfo -aAll` - info about each LD followed by its PDs
 * `megacli -PdLocate -Physdrv '[3:1]' -aAL` - locate, add `-stop` to stop
 
 #### Basic ops
@@ -82,7 +83,7 @@ Naming:
 * `megacli -CfgForeign -Clear -aALL` - clear config of foreign (marked `Foreign State: Foreign` in PD info)
 * `megacli -PDOnline -Physdrv '[3:1]'` - force drive status to online - if you want to do something with disk stuck in `Error` state
 * `megacli -CfgLdAdd -r0 [3:1] WT NORA Cached -a0` - add closest equivalent to "passthru" on some MegaRAID controllers that can't be flashed into IT mode
-* `megacli -PDList -aALL |grep -P -i '(Slot Number|Firmware state|Coerced size|Enclosure device)' |perl -pe 's/Enclosure/\nEnclosure/g' |less` - short status summary
+* `megacli -LdPdInfo -aAll |grep -P -i '(Slot Number|Firmware state|Coerced size|Enclosure device|Slot|Virtual Drive|Inquiry)' |perl -pe 's/Virtual/\nVirtual/g'`
 * `megacli -EncInfo -aALL` - enclosure info
 * `megacli -AdpBbuCmd -aALL` - battery info
 * `megacli -AdpSetProp -AlarmSilence -aALL` - silence current alarm (will still trigger on next)
