@@ -23,6 +23,15 @@ Most of these accept instance and interface (if applicable) in `instance "interf
 * `show ospf state`     - show information about OSPF network state
 * `show ospf topology`  - show information about OSPF network topology
 
+### OSPF external route type selection
+
+https://bird.network.cz/pipermail/bird-users/2009-October/005606.html
+
+* If just ospf_metric1 is set, route becomes E1.
+* If just ospf_metric2 is set, route becomes E2.
+* If nothing is set, E2 with ospf_metric2 = 10000 is the default.
+* If both are set (uninteresting corner case), ospf_metric2 is ignored.
+
 
 ## Filters
 
