@@ -9,7 +9,7 @@
 will result in "puppet-like" `# puppet://modules/network/templates/ifcfg.erb`, while
 
     # <%=  __FILE__.gsub(/.*?modules\//,@fqdn + ':') %>
-   
+
 will result in `# server.example.com:bird/templates/part.conf`
 
 ### Install package from certain distro
@@ -28,3 +28,4 @@ https://docs.puppet.com/guides/custom_types.html
 
 `raise ArgumentError, "error breaking the run`
 `raise Puppet::Error, "different error type"`
+`scope.function_fail(["Rule #{@title}:#{i}: one of parameters resolves to empty list\n#{d}"])`
