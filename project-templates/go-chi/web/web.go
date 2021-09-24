@@ -1,8 +1,7 @@
 package web
 
-
 type Web struct {
-	cfg *Config
+	cfg      *Config
 	renderer *Renderer
 }
 type Config struct {
@@ -11,9 +10,9 @@ type Config struct {
 func New(c *Config) (*Web, error) {
 	r, err := NewRenderer(c)
 	w := Web{
-		cfg: c,
+		cfg:      c,
 		renderer: r,
 	}
 
-	return &w,err
+	return &w, err
 }
