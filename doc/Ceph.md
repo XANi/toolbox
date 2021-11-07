@@ -71,6 +71,17 @@ Note that create options cant modify existing permissions, you have to use `auth
     umount /var/lib/ceph/osd/*
     for a in `lvs | grep osd-block |grep ceph |awk '{print $2}'` ; do vgremove $a ; done
 
+
+#### Restarting osd
+
+    ceph osd set noout
+    ceph osd set norebalance
+
+restart
+
+    ceph osd unset noout
+    ceph osd unset norebalance
+
 #### osd recovery
 
 * `ceph osd set noin` - do not add new ones automatically
@@ -100,11 +111,26 @@ will create small (16 PG) pools for RADOS; you can tune up but not down (AFAIK, 
 * `rbd resize --image pool-name/volume-name --size 115G` - resize in KVM via `virsh blockresize vmname device --size 115G`, device can be just `vdX`
 * `rbd --pool volumes ls`
 
+#### Writeable snapshot (you NEED it to mount XFS and similar from it)
+
+* `rbd snap ls volumes/<image_name>` - get snapshot name
+* `rbd snap protect volumes/<image_name>@<snapshot_name>` - protect it (from removal)
+* `rbd clone volumes/<image_name>@<snapshot_name> volumes/<image_name>.snap` - clone it
+* `volumes/<image_name>.snap` is now available for use
+* `rbd device map volumes/<image_name>.snap --id admin` - map it
+* `rbd children volumes/<image_name>@<snapshot_name>` - list snapshot children
+* `rbd flatten volumes/<image_name>.snap` - flatten (takes a long time, it's full copy)
+
 ### Gotchas
 
 * `ceph osd crush tunables optimal` - run on new cluster to use optimal profile instead of legacy; will cause rebalance
 
 ### Debug
+
+add `types = [ "rbd", 1024 ]` to lvm.conf in device section to make LVM see it
+
+
+`/sys/kernel/debug/ceph/<cluster-fsid.client-id>/osdc` contains in-flight requests
 
 #### Crash handling
 

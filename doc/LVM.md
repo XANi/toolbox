@@ -40,3 +40,10 @@ needed if you need to defragment it (for example when shrinking pv)
 * `mdadm -G -z36G /dev/md1`
 * repartition to 40G
 * `pvresize /dev/md1`
+
+
+### dealing with duplicate VG names
+
+* get UUID from `vgdisplay`
+* activate via `vgchange -ay --select vg_uuid=Z4INLD-t6Tz-jPF5-Zage-3lav-XoyA-rvlacV`
+* if LV names do not collide it is working. if not TBD

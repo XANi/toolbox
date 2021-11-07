@@ -9,6 +9,7 @@ Commands can be shortcuted as long as they are unique; `show ospf neighbors` is 
 * `show route for a.b.c.d primary` - show only primary route to target
 * `show route primary` - show only primary routes
 * `show route where net ~ 192.168.0.0/16` - show routes matching filter - useful for testing conditions
+* `show route export r1_bgp` - show routes exported to host
 
 ## OSPF
 
