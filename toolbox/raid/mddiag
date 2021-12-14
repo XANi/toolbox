@@ -56,6 +56,9 @@ sub summary {
         if ($md->{'degraded'}) {
             print color('bold yellow')
         }
+        elsif($md->{'array_state'} !~ /(write-pending)/) {
+            print color('bold blue')
+        }
         elsif($md->{'array_state'} !~ /(active|clean|read-auto)/) {
             print color('bold red')
         }
