@@ -40,6 +40,12 @@ You can also set -Z to specify "array" size (size visible to application) but th
 * add remaining disk(s) - `mdadm /dev/md1 --add /dev/sdc2`
 * grow array back - ` mdadm -G /dev/md1 --raid-devices=4`
 
+## shrinking raid
+
+sometimes backup of sector is required:
+
+    mdadm --grow --raid-devices=10 /dev/md127 --backup-file /root/md127.backup
+
 ## Generate mdadm.conf
 
 `mdadm --detail --scan`

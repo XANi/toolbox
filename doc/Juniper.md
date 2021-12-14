@@ -10,6 +10,10 @@
 ## reorder terms
     `insert term drop-mgmt before term export-connected` - move `drop-mgmt` before `export-connected` term
 
+## show config after inheritance
+    `show |display inheritance`
+
+
 ## Traffic monitoring
 
 `monitor traffic detail interface sth`
