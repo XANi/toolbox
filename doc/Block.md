@@ -3,6 +3,11 @@
 `echo 1 >  /sys/block/sdn/device/delete`
 
 
+#### show ongoing writes on current dir's device device
+
+`fatrace -c --filter=W`
+
+
 #### Cleanup multipath device
 
 [R](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/5/html/Online_Storage_Reconfiguration_Guide/removing_devices.html

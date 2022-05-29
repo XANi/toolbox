@@ -12,6 +12,24 @@
 ## Other
 * [Dashboard without RBAC](https://github.com/kubernetes/dashboard/tree/2b4c05b083d6f06d258d4cbc8b2b1b9583b0bc6f/src/deploy)
 
+### Dashboard cert
+
+    kubectl create secret -n kubernetes-dashboard generic kubernetes-dashboard-certs --from-file=/etc/pki/puppet/kube-dashboard.pem -o yaml --dry-run=client |perl -pi -e 's/kube-dashboard.pem:/tls.crt:/' | kubectl apply -f -
+
+
+          containers:
+        - name: kubernetes-dashboard
+          image: 'kubernetesui/dashboard:v2.0.0-rc2'
+          args:
+            - '--auto-generate-certificates'
+            - '--namespace=kubernetes-dashboard'
+            - '--token-ttl=0'
+            - '--tls-cert-file=/tls.crt'
+            - '--tls-key-file=/tls.crt'
+
+tls-cert/key is ones that need adding
+
+
 ## Useful commands
 * `kubectl --namespace=kube-system get all`
 * `kubectl get pods --all-namespaces`
@@ -21,6 +39,8 @@
 * `kubectl --namespace=kube-system describe deployment kubernetes-dashboard`
 * `kubectl --namespace=kube-system logs kube-dns-648298301-3shwp kubedns`
 * `kubectl --namespace=kube-system delete services/kube-dns deployment/kube-dns`
+* `kubectl get pvc --all-namespaces` - persistent volume claims
+* `kubectl get storageclass` - storage classes it uses
 
 
 ## getting admin token
@@ -28,8 +48,25 @@
 * `kubectl get serviceaccounts --namespace=kube-system admin-user -o yaml`
 * `kubectl describe secret admin-user-token-g2p89 --namespace kube-system`
 * `kubectl get secret --namespace=kube-system admin-user-token-g2p89 -o yaml`
+* `kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | awk '/^admin-user-token-/{print $1}') | awk '$1=="token:"{print $2}'` - dashboard token
 
 
 ## Namespace
 
 * `kubectl config set-context --current --namespace=qubebot` - change namespace in the current context
+
+
+## DNS rewrite
+
+in coredns config:
+
+        rewrite stop {
+            name suffix .ops.example.com  .cluster.local answer auto
+        }
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+        }
+
+
+it MUST rewrite in both directions else funny stuff happens
