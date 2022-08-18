@@ -41,7 +41,7 @@ tls-cert/key is ones that need adding
 * `kubectl --namespace=kube-system delete services/kube-dns deployment/kube-dns`
 * `kubectl get pvc --all-namespaces` - persistent volume claims
 * `kubectl get storageclass` - storage classes it uses
-
+* `kubectl rollout restart -n kubernetes-dashboard deployment kubernetes-dashboard` - rolling restart
 
 ## getting admin token
 

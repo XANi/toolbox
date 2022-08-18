@@ -34,6 +34,10 @@ example config:
 
 it also doesnt seem to like querying another logical system from non-default routing instance
 
+### SNMP restart
+
+    `restart snmp gracefully`
+
 ### Display resolved prefix list
 run show configuration policy-options prefix-list bgp-peers |display inheritance
 
