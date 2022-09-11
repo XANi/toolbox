@@ -4,11 +4,10 @@ import (
 	"embed"
 	"github.com/XANi/toolbox/project-templates/go-gin-embedded/web"
 	"github.com/efigence/go-mon"
-	"os"
-
 	"github.com/urfave/cli"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"os"
 )
 
 var version string
@@ -33,7 +32,7 @@ func init() {
 		return lvl >= zapcore.ErrorLevel
 	})
 	lowPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
-		return lvl < zapcore.ErrorLevel
+		return lvl < zapcore.ErrorLevel && (lvl > zapcore.DebugLevel != debug)
 	})
 	core := zapcore.NewTee(
 		zapcore.NewCore(consoleEncoder, os.Stderr, lowPriority),
@@ -67,6 +66,7 @@ func main() {
 	log.Errorf("Starting %s version: %s", app.Name, version)
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{Name: "help, h", Usage: "show help"},
+		cli.BoolFlag{Name: "debug, d", Usage: "enable debug logs"},
 		cli.StringFlag{
 			Name:   "listen-addr",
 			Value:  "127.0.0.1:3001",
@@ -79,6 +79,7 @@ func main() {
 			cli.ShowAppHelp(c)
 			os.Exit(1)
 		}
+		debug = c.Bool("debug")
 		w, err := web.New(web.Config{
 			Logger:     log,
 			ListenAddr: c.String("listen-addr"),
@@ -88,28 +89,32 @@ func main() {
 		}
 		return w.Run()
 	}
-	app.Commands = []cli.Command{
-		{
-			Name:    "rem",
-			Aliases: []string{"a"},
-			Usage:   "example cmd",
-			Action: func(c *cli.Context) error {
-				log.Warnf("running example cmd")
-				return nil
-			},
-		},
-		{
-			Name:    "add",
-			Aliases: []string{"a"},
-			Usage:   "example cmd",
-			Action: func(c *cli.Context) error {
-				log.Warnf("running example cmd")
-				return nil
-			},
-		},
-	}
+	// optional commands
+	//app.Commands = []cli.Command{
+	//	{
+	//		Name:    "rem",
+	//		Aliases: []string{"a"},
+	//		Usage:   "example cmd",
+	//		Action: func(c *cli.Context) error {
+	//			log.Warnf("running example cmd")
+	//			return nil
+	//		},
+	//	},
+	//	{
+	//		Name:    "add",
+	//		Aliases: []string{"a"},
+	//		Usage:   "example cmd",
+	//		Action: func(c *cli.Context) error {
+	//			log.Warnf("running example cmd")
+	//			return nil
+	//		},
+	//	},
+	//}
 	// to sort do that
-	//sort.Sort(cli.FlagsByName(app.Flags))
-	//sort.Sort(cli.CommandsByName(app.Commands))
-	app.Run(os.Args)
+	// sort.Sort(cli.FlagsByName(app.Flags))
+	// sort.Sort(cli.CommandsByName(app.Commands))
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Errorf("err: %s", err)
+	}
 }

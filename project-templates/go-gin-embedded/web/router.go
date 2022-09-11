@@ -15,13 +15,15 @@ import (
 
 type WebBackend struct {
 	l   *zap.SugaredLogger
+	al  *zap.SugaredLogger
 	r   *gin.Engine
 	cfg *Config
 }
 
 type Config struct {
-	Logger     *zap.SugaredLogger `yaml:"-"`
-	ListenAddr string             `yaml:"listen_addr"`
+	Logger       *zap.SugaredLogger `yaml:"-"`
+	AccessLogger *zap.SugaredLogger `yaml:"-"`
+	ListenAddr   string             `yaml:"listen_addr"`
 }
 
 func New(cfg Config, webFS fs.FS) (backend *WebBackend, err error) {
@@ -33,7 +35,11 @@ func New(cfg Config, webFS fs.FS) (backend *WebBackend, err error) {
 	}
 	w := WebBackend{
 		l:   cfg.Logger,
+		al:  cfg.AccessLogger,
 		cfg: &cfg,
+	}
+	if cfg.AccessLogger == nil {
+		w.al = w.l
 	}
 	r := gin.New()
 	w.r = r
@@ -44,8 +50,8 @@ func New(cfg Config, webFS fs.FS) (backend *WebBackend, err error) {
 	}
 	r.SetHTMLTemplate(t)
 	// for zap logging
-	r.Use(ginzap.Ginzap(w.l.Desugar(), time.RFC3339, false))
-	//r.Use(ginzap.RecoveryWithZap(w.l.Desugar(), true))
+	r.Use(ginzap.Ginzap(w.al.Desugar(), time.RFC3339, false))
+	//r.Use(ginzap.RecoveryWithZap(w.al.Desugar(), true))
 	// basic logging to stdout
 	//r.Use(gin.LoggerWithWriter(os.Stdout))
 	r.Use(gin.Recovery())
