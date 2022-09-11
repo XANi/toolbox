@@ -39,7 +39,7 @@ func New(cfg Config, webFS fs.FS) (backend *WebBackend, err error) {
 		cfg: &cfg,
 	}
 	if cfg.AccessLogger == nil {
-		w.al = w.l
+		w.al = w.l //.Named("accesslog")
 	}
 	r := gin.New()
 	w.r = r

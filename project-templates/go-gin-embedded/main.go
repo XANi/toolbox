@@ -32,7 +32,7 @@ func init() {
 		return lvl >= zapcore.ErrorLevel
 	})
 	lowPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
-		return lvl < zapcore.ErrorLevel && (lvl > zapcore.DebugLevel != debug)
+		return (lvl < zapcore.ErrorLevel) != (lvl == zapcore.DebugLevel && !debug)
 	})
 	core := zapcore.NewTee(
 		zapcore.NewCore(consoleEncoder, os.Stderr, lowPriority),
@@ -80,6 +80,7 @@ func main() {
 			os.Exit(1)
 		}
 		debug = c.Bool("debug")
+		log.Debug("debug enabled")
 		w, err := web.New(web.Config{
 			Logger:     log,
 			ListenAddr: c.String("listen-addr"),
