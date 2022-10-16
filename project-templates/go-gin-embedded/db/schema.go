@@ -1,3 +1,5 @@
 package db
 
-type Record struct{}
+type Record struct {
+	ID uint
+}
