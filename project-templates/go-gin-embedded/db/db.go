@@ -42,8 +42,19 @@ func New(cfg Config) (*DB, error) {
 	}
 	dbObj.d = dbConn
 	dbObj.cfg = cfg
-	//err = dbObj.d.Set("gorm:table_options", tableOptions).AutoMigrate(Record{})
-	//err = dbObj.d.AutoMigrate(Record{})
+	migrations := append(make([]interface{}, 0),
+		// types to migrate,
+		Record{},
+	)
+
+	for _, table := range migrations {
+		//err = dbObj.d.Set("gorm:table_options", tableOptions).AutoMigrate(Record{})
+		err = dbObj.d.AutoMigrate(table)
+		if err != nil {
+			return nil, fmt.Errorf("error migrating %T: %s", table, err)
+		}
+	}
+
 	if err != nil {
 		return nil, err
 	}
