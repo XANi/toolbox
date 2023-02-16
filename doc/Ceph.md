@@ -88,6 +88,24 @@ restart
 * `ceph osd set nobackfill` - do not start backfill
 * `ceph osd set norecover` - do not start recovery
 
+
+#### replacing drive
+
+First, destroy old:
+
+    ceph osd destroy 4
+
+then prepare new
+
+    ceph-volume lvm create --osd-id 4 --data /dev/nvme0n1p5
+
+or in parts
+
+    ceph-volume lvm prepare --osd-id 4 --data /dev/nvme0n1p5
+    ceph-volume lvm activate 4 fsid-from-above-command
+
+
+
 ### Rados GW
 
 #### Common ops

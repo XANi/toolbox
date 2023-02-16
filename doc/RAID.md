@@ -31,6 +31,7 @@ add `--uuid=` (from `--examine`) to start only specific one
 
 You can also set -Z to specify "array" size (size visible to application) but that wont persist between reboots
 
+
 ## make RAID10 out of RAID online
 
 * shrink PV - `pvresize --setphysicalvolumesize 20G /dev/md1`
@@ -46,10 +47,15 @@ sometimes backup of sector is required:
 
     mdadm --grow --raid-devices=10 /dev/md127 --backup-file /root/md127.backup
 
+message is usually sth like
+
+
+
 ## Generate mdadm.conf
 
 `mdadm --detail --scan`
 
+    mdadm: Cannot set new_offset for /dev/sdn1
 
 
 ## [MegaRAID](http://www.lsi.com/Search/pages/results.aspx?k=megacli&r=assettype%3D%22AQpVc2VyIEd1aWRlCWFzc2V0dHlwZQECXiICIiQ%3D%22)
