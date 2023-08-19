@@ -52,3 +52,13 @@ Adding '?v' will add colum names + padding, like that:
 * `curl -XPOST "http://localhost:9200/syslog-2018.08.06/_forcemerge?max_num_segments=1"` - force full merge (removes deleted records) on index
 * `curl -XPOST localhost:9200/_cluster/reroute -H 'Content-Type: application/json' -d '{"commands":[{"move":{"index":"index-name","shard":6,"from_node":"node1","to_node":"node2"}}]}'` - force shard relocation
 * `curl -XPUT "localhost:9200/indexname/_settings?pretty" -H 'Content-Type: application/json' -d'{"index" : {"number_of_replicas" : 1}}'
+
+#### change number of shards
+
+    for a in $(curl -s http://localhost:9200/_cat/shards |awk '{print $1}'|perl -ne 'if (length($_) > 20) {print $_}'|uniq|sort) ; do curl -XPUT "localhost:9200/$a/_settings?pretty" -H 'Content-Type: application/json' -d'
+    {
+        "index" : {
+            "number_of_replicas" : 0
+        }
+     }
+    ' & sleep 0.4 ;done

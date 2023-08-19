@@ -1,9 +1,9 @@
+# HAProxy
 
 
+## Snippets
 
-#### Snippets
-
-### Log old TLS
+### Log old TLS / conditional logging
 
 ```
     http-request capture req.hdr(User-Agent) len 100

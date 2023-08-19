@@ -15,15 +15,13 @@ var exit = make(chan bool, 1)
 func init() {
 	consoleEncoderConfig := zap.NewDevelopmentEncoderConfig()
 	// naive systemd detection. Drop timestamp if running under it
-	if os.Getenv("INVOCATION_ID") != "" || os.Getenv("JOURNAL_STREAM") != "" {
+	if os.Getenv("JOURNAL_STREAM") != "" {
 		consoleEncoderConfig.TimeKey = ""
 	}
 	consoleEncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	consoleEncoder := zapcore.NewConsoleEncoder(consoleEncoderConfig)
-	consoleStderr := zapcore.Lock(os.Stderr)
-	_ = consoleStderr
 
-	// if needed point differnt priority log to different place
+	// if needed point different priority log to different place
 	highPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		return lvl >= zapcore.ErrorLevel
 	})
