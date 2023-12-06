@@ -29,3 +29,9 @@ https://docs.puppet.com/guides/custom_types.html
 `raise ArgumentError, "error breaking the run`
 `raise Puppet::Error, "different error type"`
 `scope.function_fail(["Rule #{@title}:#{i}: one of parameters resolves to empty list\n#{d}"])`
+
+
+## Filter undef out of hash/array
+
+ * `$hash.filter |$key, $val| { $val =~ NotUndef }`
+ * `$array.filter |$val| { $val =~ NotUndef }`
