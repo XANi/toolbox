@@ -40,8 +40,10 @@ Note that create options cant modify existing permissions, you have to use `auth
 * `ceph osd pool set foo pg_num 64` - create
 * `ceph osd pool set foo pgp_num 64` - balance (pgp means "placement groups for placement")
 
+## clients
 
-
+* `ceph daemon mon.$(hostname -s) sessions |less` - show active sessions on current mon
+* `ceph features` - show how many clients use given feature set and client version
 
 
 ## Volume management
@@ -58,6 +60,7 @@ Note that create options cant modify existing permissions, you have to use `auth
 * `ceph-osd -i 11 --mkfs --mkkey` - create fs and key for osd
 * `ceph auth add osd.8  osd 'allow *' mon 'allow rwx' -i /var/lib/ceph/osd/ceph-8/keyring` - add key for osd
 * `ceph osd create 2e6ee69a-5477-40b2-9eea-c675ef8ca2a3` - create osd from blkuid
+* `ceph-volume lvm list` - show lvm to osd mapping
 
 ### Removing OSD
 
@@ -105,6 +108,10 @@ or in parts
     ceph-volume lvm prepare --osd-id 4 --data /dev/nvme0n1p5
     ceph-volume lvm activate 4 fsid-from-above-command
 
+
+## pg
+
+* deep scrub:  `ceph pg deep-scrub <pg.id>` to get detail `ceph health detail`
 
 
 ## Rados GW
