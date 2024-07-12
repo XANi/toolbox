@@ -20,3 +20,8 @@
 # HTTP testing
 
 * 'slowhttptest' - test slowloris-like DoS
+
+
+# Hardware
+
+* `lstopo` - show memory/PCIe architecture - package `hwloc`/`hwloc-nox`

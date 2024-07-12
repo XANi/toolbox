@@ -70,3 +70,8 @@ in coredns config:
 
 
 it MUST rewrite in both directions else funny stuff happens
+
+## RBAC
+
+  * https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+  * https://kubernetes.io/docs/reference/access-authn-authz/authentication/
