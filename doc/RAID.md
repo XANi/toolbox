@@ -103,6 +103,7 @@ Naming:
 * `megacli -adpsetprop -enablejbod -1 -a0` - JBOD disks (works on LSI 2208, **doesnt** on 2108)
     it should detect your drives right after you ran command, it only touches unconfigured drives so you might want to clear config first
     Also, IBM BIOS can be retarded about it and sometimes you need to set boot device to **Legacy** to have bootable system
+* `megacli -PDMakeJBOD -PhysDrv[64:0,64,1] -a0` - make disk JBOD
 * `megacli -CfgEachDskRaid0 WT NORA Direct NoCachedBadBBU -aALL` - make a bunch of RAID0s from disks. You probably want JBOD mode  if possible (2108 will return ok but fail)
 * `megacli -LDSetProp -ForcedWB -Immediate -LALL -a0` - force writeback, needed on flash-based cache unit
 
