@@ -37,3 +37,8 @@ https://bird.network.cz/pipermail/bird-users/2009-October/005606.html
 ## Filters
 
 * `if net = 0.0.0.0/0 then krt_prefsrc = 1.2.3.4` -  override kernel source ip ( `krt_prefsrc` ) for certain routes. There is a ton more [here](http://bird.network.cz/?get_doc&f=bird-6.html#ss6.6), every tcp parameter can be overriden.
+
+
+## Gotchas
+
+* `interface "10.0.0.0/24"` is treated as interface NAME being `10.0.0.0/24`, to add interfaces by IP it need to not be quoted like this: `interface 10.0.0.0/24`
