@@ -43,6 +43,15 @@ tls-cert/key is ones that need adding
 * `kubectl get storageclass` - storage classes it uses
 * `kubectl rollout restart -n kubernetes-dashboard deployment kubernetes-dashboard` - rolling restart
 
+## encode secret as env
+
+    kubectl get secret --namespace test s3-backup -o json | jq --raw-output '.data | to_entries | .[] | "\(.key)=\(.value | @base64d)"'
+
+get secret `s3-backup` from namespace `test` and output it in env form
+
+    KEY=value
+
+
 ## getting admin token
 
 * `kubectl get serviceaccounts --namespace=kube-system admin-user -o yaml`
@@ -70,6 +79,12 @@ in coredns config:
 
 
 it MUST rewrite in both directions else funny stuff happens
+
+## restarting/downtiming node
+
+    kubectl drain --ignore-daemonsets --delete-emptydir-data kube1
+    kubectl uncordon kube1
+
 
 ## RBAC
 

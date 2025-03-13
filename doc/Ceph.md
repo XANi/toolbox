@@ -79,7 +79,7 @@ Note that create options cant modify existing permissions, you have to use `auth
 ### Restarting osd
 
     ceph osd set noout
-    ceph osd set norebalance
+
 
 restart
 

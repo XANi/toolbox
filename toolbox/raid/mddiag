@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# template for new commandline scripts
+
 use strict;
 use warnings;
 use Carp qw(croak cluck carp confess);
@@ -53,8 +53,10 @@ sub summary {
     my $status = shift;
     foreach my $md_name(sort keys %$status) {
         my $md = $status->{$md_name};
+        my $extra = '';
         if ($md->{'degraded'}) {
-            print color('bold yellow')
+            $extra = color('bold red') .'degraded:' . color('bold yellow');
+            print color('bold yellow');
         }
         elsif($md->{'array_state'} !~ /(write-pending)/) {
             print color('bold blue')
@@ -80,7 +82,7 @@ sub summary {
 
         print "$md_name:\t"
             . "$md->{'level'}\t"
-            . "[$md->{'array_state'}:$md->{'sync_action'}]\t"
+            . "[$extra$md->{'array_state'}:$md->{'sync_action'}]\t"
             . "component: " . format_bytes($md->{'component_size'} * 1024) . "\t"
             . "";
         if ($md->{'chunk_size'}) {
