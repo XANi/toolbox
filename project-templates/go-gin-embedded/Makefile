@@ -2,11 +2,13 @@
 version=$(shell git describe --tags --long --always --dirty|sed 's/^v//')
 binfile=main
 
+.FORCE:
+
 all:
 	go build -ldflags "-X main.version=$(version)" $(binfile).go
 	-@go fmt
 
-static:
+static: .FORCE
 	CGO_ENABLED=0 go build -ldflags "-X main.version=$(version) -extldflags \"-static\"" -o $(binfile).static $(binfile).go
 
 arm:

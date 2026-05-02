@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"embed"
+	"github.com/XANi/go-yamlcfg"
+	"github.com/XANi/toolbox/project-templates/go-gin-embedded/config"
 	"github.com/XANi/toolbox/project-templates/go-gin-embedded/web"
 	"github.com/efigence/go-mon"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v3"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"io/fs"
@@ -60,34 +63,55 @@ func main() {
 	defer log.Sync()
 	// register internal stats
 	mon.RegisterGcStats()
-	app := cli.NewApp()
+	app := &cli.Command{
+		Name:        "foobar",
+		Aliases:     nil,
+		Usage:       "",
+		UsageText:   "",
+		ArgsUsage:   "",
+		Version:     "",
+		Description: "do foo to bar",
+		Flags:       nil,
+		Commands:    nil,
+		HideHelp:    true,
+	}
 	app.Name = "foobar"
 	app.Description = "do foo to bar"
 	app.Version = version
 	app.HideHelp = true
 	log.Infof("Starting %s version: %s", app.Name, version)
 	app.Flags = []cli.Flag{
-		cli.BoolFlag{Name: "help, h", Usage: "show help"},
-		cli.BoolFlag{Name: "debug, d", Usage: "enable debug logs"},
-		cli.StringFlag{
-			Name:   "listen-addr",
-			Value:  "127.0.0.1:3001",
-			Usage:  "Listen addr",
-			EnvVar: "LISTEN_ADDR",
+		&cli.BoolFlag{Name: "help, h", Usage: "show help"},
+		&cli.BoolFlag{Name: "debug, d", Usage: "enable debug logs"},
+		&cli.StringFlag{
+			Name:  "listen-addr",
+			Value: "127.0.0.1:3001",
+			Usage: "Listen addr",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("LISTEN_ADDR"),
+			),
 		},
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "pprof-addr",
 			Value: "",
 			Usage: "address to run pprof on, disabled by default",
 		},
 	}
-	app.Action = func(c *cli.Context) error {
+	app.Action = func(ctx context.Context, c *cli.Command) error {
 		if c.Bool("help") {
 			cli.ShowAppHelp(c)
 			os.Exit(1)
 		}
 		debug = c.Bool("debug")
 		log.Debug("debug enabled")
+
+		cfgFiles := []string{
+			"$HOME/.config/my/cnf.yaml",
+			"./cfg/config.yaml",
+			"/etc/my/cnf.yaml",
+		}
+		var cfg config.Config
+		err := yamlcfg.LoadConfig(cfgFiles, &cfg)
 		var webDir fs.FS
 		webDir = embeddedWebContent
 		if st, err := os.Stat("./static"); err == nil && st.IsDir() {
@@ -114,31 +138,21 @@ func main() {
 		return w.Run()
 	}
 	// optional commands
-	//app.Commands = []cli.Command{
-	//	{
-	//		Name:    "rem",
-	//		Aliases: []string{"a"},
-	//		Usage:   "example cmd",
-	//		Action: func(c *cli.Context) error {
-	//			log.Warnf("running example cmd")
-	//			return nil
-	//		},
-	//	},
-	//	{
-	//		Name:    "add",
-	//		Aliases: []string{"a"},
-	//		Usage:   "example cmd",
-	//		Action: func(c *cli.Context) error {
-	//			log.Warnf("running example cmd")
-	//			return nil
-	//		},
-	//	},
-	//}
+	app.Commands = []*cli.Command{
+		{
+			Name:    "add",
+			Aliases: []string{"a"},
+			Usage:   "example cmd",
+			Action: func(ctx context.Context, c *cli.Command) error {
+				log.Warnf("running example cmd")
+				return nil
+			},
+		},
+	}
 	// to sort do that
 	// sort.Sort(cli.FlagsByName(app.Flags))
 	// sort.Sort(cli.CommandsByName(app.Commands))
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Errorf("err: %s", err)
+	if err := app.Run(context.Background(), os.Args); err != nil {
+		log.Fatal(err)
 	}
 }

@@ -1,5 +1,6 @@
 package db
 
+// for cgo-less driver: "github.com/glebarez/sqlite"
 import (
 	"fmt"
 	"go.uber.org/zap"

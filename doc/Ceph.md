@@ -61,6 +61,9 @@ Note that create options cant modify existing permissions, you have to use `auth
 * `ceph auth add osd.8  osd 'allow *' mon 'allow rwx' -i /var/lib/ceph/osd/ceph-8/keyring` - add key for osd
 * `ceph osd create 2e6ee69a-5477-40b2-9eea-c675ef8ca2a3` - create osd from blkuid
 * `ceph-volume lvm list` - show lvm to osd mapping
+* `ceph device ls` - list serial number of each osd
+* `ceph device ls-by-host hostname` - limit to a single hostname
+* `ceph osd in|out number` - enable/disable using this OSD
 
 ### Removing OSD
 

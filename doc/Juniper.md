@@ -1,6 +1,6 @@
 * `show route advertising-protocol bgp 1.1.1.1` - show routes advertised to host
 * `show route receive-protocol bgp 1.1.1.1` - show routes received from host
-
+* `show ospf database advertising-router self` - show routes ospf router advertises
 #### Add default gw for management
 
     `set routing-options static route 0.0.0.0/0 next-hop 172.16.1.1`

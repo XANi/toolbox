@@ -6,7 +6,9 @@ all:
 	go build -ldflags "-X main.version=$(version)" $(binfile).go
 	-@go fmt
 
-static:
+.FORCE:
+
+static: .FORCE
 	go build -ldflags "-X main.version=$(version) -extldflags \"-static\"" -o $(binfile).static $(binfile).go
 
 arm:
